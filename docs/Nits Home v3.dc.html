@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; background: #F4F3F0; color: #0B0C10; font-family: Archivo, Helvetica, sans-serif; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: inherit; text-decoration: none; transition: opacity 200ms ease; }
+  a:hover { color: inherit; opacity: 0.68; }
+  a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; border-radius: 2px; }
+  @keyframes nits-rise { from { opacity: 0; transform: translateY(32px) } to { opacity: 1; transform: none } }
+  @keyframes nits-fade { from { opacity: 0 } to { opacity: 1 } }
+  @keyframes nits-in { from { opacity: 0; transform: translateY(48px) } to { opacity: 1; transform: none } }
+  @keyframes nits-in-sm { from { opacity: 0; transform: translateY(24px) } to { opacity: 1; transform: none } }
+  @keyframes nits-zoom { from { opacity: 0; transform: scale(1.04) } to { opacity: 1; transform: none } }
+  @keyframes nits-par { from { transform: translateY(64px) } to { transform: translateY(-64px) } }
+  @keyframes nits-blink { 0%, 45% { opacity: 1 } 50%, 95% { opacity: 0.16 } 100% { opacity: 1 } }
+</style>
+</helmet>
+
+<div style="background: #F4F3F0; overflow-x: hidden">
+
+  <sc-if value="{{ showProgress }}" hint-placeholder-val="{{ true }}">
+    <div style="position: fixed; top: 0; left: 0; right: 0; z-index: 90; height: 2px; background: rgba(11,12,16,0.08)">
+      <div style="height: 100%; background: #4B55EE; width: {{ progressWidth }}"></div>
+    </div>
+  </sc-if>
+
+  <header style="position: fixed; top: 2px; left: 0; right: 0; z-index: 80; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; padding: 16px clamp(20px, 4vw, 40px); backdrop-filter: blur(16px); transition: background 400ms ease, color 400ms ease, border-color 400ms ease; background: {{ navBg }}; color: {{ navFg }}; border-bottom: 1px solid {{ navBorder }}">
+    <a href="#act-00" style="display: flex; align-items: center; gap: 16px">
+      <img src="assets/nits-wordmark.png" alt="NITS Engineering" style="height: 32px; width: 72px; object-fit: contain; display: block" />
+    </a>
+    <nav style="display: flex; align-items: center; flex-wrap: wrap; gap: 32px; font-size: 15px; letter-spacing: -0.005em">
+      <a href="#act-01" style="color: inherit; opacity: 0.72" style-hover="opacity: 1">Approach</a>
+      <a href="#act-02" style="color: inherit; opacity: 0.72" style-hover="opacity: 1">Scale</a>
+      <a href="#act-03" style="color: inherit; opacity: 0.72" style-hover="opacity: 1">Genesis 1.3</a>
+      <a href="#act-04" style="color: inherit; opacity: 0.72" style-hover="opacity: 1">Products</a>
+      <a href="#act-05" style="color: inherit; opacity: 0.72" style-hover="opacity: 1">Partners</a>
+    </nav>
+    <a href="#contact" style="display: inline-flex; align-items: center; gap: 12px; padding: 12px 24px; border-radius: 999px; background: #4B55EE; color: #FFFFFF; font-size: 15px; font-weight: 500; letter-spacing: -0.005em; opacity: 1" style-hover="background: #3A43D6; opacity: 1">
+      Request access
+      <span style="width: 6px; height: 6px; background: #FFFFFF; border-radius: 50%; animation: nits-blink 2.4s infinite"></span>
+    </a>
+  </header>
+
+  <section id="act-00" data-screen-label="00 Overview" style="position: relative; min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; gap: 96px; padding: 160px clamp(20px, 4vw, 40px) 40px; background: #F4F3F0; overflow: hidden">
+    <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 24px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #5C5F68">
+      <span>00 / Overview</span>
+      <span>"Building A Healthier Tomorrow"</span>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 64px; align-items: end; padding-bottom: 40px">
+      <h1 style="margin: 0; flex: 1 1 520px; font-size: clamp(52px, 9.5vw, 132px); line-height: 0.9; letter-spacing: -0.045em; font-weight: 600; max-width: 1100px; animation: nits-rise 900ms cubic-bezier(0.16,1,0.3,1) both">Thinking and building the impossible.</h1>
+      <div style="flex: 0 1 300px; min-width: 260px; display: flex; flex-direction: column; gap: 24px; animation: nits-fade 1200ms 300ms both">
+        <p style="margin: 0; font-size: 17px; line-height: 1.6; color: #43464F; text-wrap: pretty">NITS Engineering is a bio-medical research company building a healthier tomorrow. We build the instruments that let researchers attempt what the field has written off as out of reach.</p>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #4B55EE">Scroll to descend ↓</div>
+      </div>
+    </div>
+    <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: #E2E0DA"></div>
+  </section>
+
+  <section id="act-01" data-screen-label="01 Approach" style="position: relative; background: #0B0C10; color: #F4F3F0; padding: clamp(96px, 12vw, 192px) clamp(20px, 4vw, 40px); overflow: hidden">
+    <div style="position: absolute; inset: 0; background-image: radial-gradient(rgba(244,243,240,0.10) 1px, transparent 1px); background-size: 48px 48px; opacity: 0.6; animation: nits-par linear both; animation-timeline: view(); animation-range: cover 0% cover 100%;"></div>
+    <div style="position: relative; display: flex; flex-direction: column; gap: 80px">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #ADB3FF">01 / Approach</div>
+      <h2 style="margin: 0 auto; max-width: 1180px; font-size: clamp(40px, 6.2vw, 84px); line-height: 0.98; letter-spacing: -0.04em; font-weight: 600; text-wrap: balance; animation: nits-rise linear both; animation-timeline: view(); animation-range: entry 15% cover 30%">Living tissue is not something you wait for. It is something you can build.</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 64px; max-width: 1180px; margin: 48px auto 0; animation: nits-fade linear both; animation-timeline: view(); animation-range: entry 35% cover 45%">
+        <p style="margin: 0; font-size: 17px; line-height: 1.6; color: #AFB3BD">For a century, biology set the pace of medicine. Tissue had to be donated, cultured, or approximated — and every question a researcher could ask was shaped by what happened to be available.</p>
+        <p style="margin: 0; font-size: 17px; line-height: 1.6; color: #AFB3BD">We think that constraint is an engineering problem. If a cell can be positioned, held, fed and observed, then tissue becomes a thing you specify rather than a thing you find.</p>
+        <p style="margin: 0; font-size: 17px; line-height: 1.6; color: #AFB3BD">That belief is the whole company. The instruments are how we argue it — each one built to make a previously impossible experiment ordinary.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="act-02" data-screen-label="02 Scale" style="position: relative; background: #0B0C10; color: #F4F3F0; border-top: 1px solid #1A1D26">
+    <div style="display: flex; flex-wrap: wrap">
+      <div style="flex: 1 1 340px; max-width: 420px">
+        <div style="position: sticky; top: 0; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; gap: 40px; padding: 80px clamp(20px, 4vw, 40px); border-right: 1px solid #1A1D26">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #ADB3FF">02 / Scale</div>
+          <h2 style="margin: 0; font-size: clamp(34px, 4.4vw, 56px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 600">Down to the scale where medicine is decided.</h2>
+          <div style="display: flex; flex-direction: column; gap: 16px">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8F9B">Current depth</div>
+            <div style="display: flex; align-items: flex-start; gap: 2px; font-size: clamp(36px, 4vw, 48px); letter-spacing: -0.025em; line-height: 1"><span>10</span><span style="font-size: 22px; line-height: 1.1; letter-spacing: 0">{{ depthExp }}</span><span style="margin-left: 10px; font-size: 24px; align-self: flex-end; color: #8A8F9B">m</span></div>
+          </div>
+        </div>
+      </div>
+      <div style="flex: 3 1 520px; min-width: 0">
+        <div style="min-height: 78vh; display: flex; flex-direction: column; justify-content: center; gap: 24px; padding: 80px clamp(24px, 4vw, 64px); border-bottom: 1px solid #1A1D26; animation: nits-in linear both; animation-timeline: view(); animation-range: entry 20% cover 40%">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #ADB3FF">10⁻¹ m — the body</div>
+          <p style="margin: 0; max-width: 720px; font-size: clamp(24px, 2.4vw, 30px); line-height: 1.25; letter-spacing: -0.025em">Where the problem is stated: an organ that fails, a drug that has to be trusted, a wound that will not close.</p>
+        </div>
+        <div style="min-height: 78vh; display: flex; flex-direction: column; justify-content: center; gap: 24px; padding: 80px clamp(24px, 4vw, 64px); border-bottom: 1px solid #1A1D26; animation: nits-in linear both; animation-timeline: view(); animation-range: entry 20% cover 40%">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #ADB3FF">10⁻³ m — the tissue</div>
+          <p style="margin: 0; max-width: 720px; font-size: clamp(24px, 2.4vw, 30px); line-height: 1.25; letter-spacing: -0.025em">Where structure starts to matter. Function here comes from arrangement — which cells, next to which, in what geometry.</p>
+        </div>
+        <div style="min-height: 78vh; display: flex; flex-direction: column; justify-content: center; gap: 24px; padding: 80px clamp(24px, 4vw, 64px); border-bottom: 1px solid #1A1D26; animation: nits-in linear both; animation-timeline: view(); animation-range: entry 20% cover 40%">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #ADB3FF">10⁻⁵ m — the cell</div>
+          <p style="margin: 0; max-width: 720px; font-size: clamp(24px, 2.4vw, 30px); line-height: 1.25; letter-spacing: -0.025em">Where we work. Place a living cell deliberately, keep it alive, and the tissue above it becomes designable.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="act-03" data-screen-label="03 Evidence" style="position: relative; background: #0B0C10; color: #F4F3F0; padding: clamp(96px, 12vw, 192px) clamp(20px, 4vw, 40px); border-top: 1px solid #1A1D26; overflow: hidden">
+    <div style="display: flex; flex-direction: column; gap: 80px">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #ADB3FF">03 / Evidence</div>
+      <div style="display: flex; flex-direction: column; gap: 32px">
+        <img src="assets/logo-genesis.png" alt="Genesis 1.3" style="width: min(520px, 80%); display: block; mix-blend-mode: screen; animation: nits-in linear both; animation-timeline: view(); animation-range: entry 5% cover 26%;" />
+        <h2 style="margin: 0; font-size: clamp(34px, 4.4vw, 56px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 600; max-width: 900px; animation: nits-in linear both; animation-timeline: view(); animation-range: entry 10% cover 28%">Digital Light 3D Bioprinter</h2>
+        <p style="margin: 0; max-width: 700px; font-size: 19px; line-height: 1.6; color: #AFB3BD; animation: nits-fade linear both; animation-timeline: view(); animation-range: entry 20% cover 34%">Light does the building. A projected image cures a whole layer of cell-laden resin at once, so a construct forms in the time an extrusion nozzle would still be tracing its first path — and the cells inside it stay alive.</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 24px">
+        <div style="position: relative; aspect-ratio: 2.1 / 1; min-height: 320px; border: 1px solid #2A2E3A; animation: nits-zoom linear both; animation-timeline: view(); animation-range: entry 8% cover 32%; background-color: #12141C; background-image: repeating-linear-gradient(90deg, rgba(244,243,240,0.05) 0 1px, transparent 1px 11px); overflow: hidden">
+          <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8F9B">
+            <div style="width: 56px; height: 56px; border: 1px solid #2A2E3A; border-radius: 50%"></div>
+            <div>Image placeholder — Genesis 1.3, full bleed<br /><span style="color: #6E7380">2400 × 1240 recommended</span></div>
+          </div>
+          <div style="position: absolute; left: 24px; top: 24px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #ADB3FF">Fig. 01 / Genesis 1.3</div>
+          <div style="position: absolute; right: 24px; bottom: 24px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8F9B">Built</div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: #2A2E3A; border: 1px solid #2A2E3A">
+          <div style="background: #0B0C10; display: flex; flex-direction: column; gap: 24px; padding: 32px 24px 40px; animation: nits-in-sm linear both; animation-timeline: view(); animation-range: entry 8% cover 34%;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #ADB3FF">Projection</div><div style="font-size: 15px; line-height: 1.55; color: #AFB3BD">A full layer is cured in one exposure — no nozzle, no shear on the cells.</div></div>
+          <div style="background: #0B0C10; display: flex; flex-direction: column; gap: 24px; padding: 32px 24px 40px; animation: nits-in-sm linear both; animation-timeline: view(); animation-range: entry 15% cover 41%;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #ADB3FF">Resolution</div><div style="font-size: 15px; line-height: 1.55; color: #AFB3BD">Geometry defined in software, down to the scale where tissue architecture begins.</div></div>
+          <div style="background: #0B0C10; display: flex; flex-direction: column; gap: 24px; padding: 32px 24px 40px; animation: nits-in-sm linear both; animation-timeline: view(); animation-range: entry 22% cover 48%;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #ADB3FF">Environment</div><div style="font-size: 15px; line-height: 1.55; color: #AFB3BD">Sterile, temperature-held chamber across the whole build.</div></div>
+          <div style="background: #0B0C10; display: flex; flex-direction: column; gap: 24px; padding: 32px 24px 40px; animation: nits-in-sm linear both; animation-timeline: view(); animation-range: entry 29% cover 55%;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #ADB3FF">Verification</div><div style="font-size: 15px; line-height: 1.55; color: #AFB3BD">Post-print imaging and a viability readout for every construct.</div></div>
+        </div>
+        <sc-if value="{{ showNotes }}" hint-placeholder-val="{{ true }}">
+          <p style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8F9B">Specification placeholders — send the real figures and I'll set them</p>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <section id="act-04" data-screen-label="04 Products" style="position: relative; background: #0B0C10; color: #F4F3F0; padding: clamp(96px, 12vw, 192px) clamp(20px, 4vw, 40px); border-top: 1px solid #1A1D26">
+    <div style="display: flex; flex-direction: column; gap: 80px">
+      <div style="display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 32px">
+        <div style="display: flex; flex-direction: column; gap: 48px">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #ADB3FF">04 / Programme</div>
+          <h2 style="margin: 0; font-size: clamp(34px, 4.4vw, 56px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 600; max-width: 900px; text-wrap: balance; animation: nits-in linear both; animation-timeline: view(); animation-range: entry 10% cover 34%;">Genesis is one instrument in a four-part programme.</h2>
+        </div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8F9B; text-align: right">Programme / four products</div>
+      </div>
+      <div style="border-top: 1px solid #2A2E3A">
+        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 32px; padding: 32px 0; border-bottom: 1px solid #1A1D26; animation: nits-in-sm linear both; animation-timeline: view(); animation-range: entry 8% cover 34%;" style-hover="background: #12141C">
+          <div style="width: 56px; flex: none; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8F9B">P—01</div>
+          <img src="assets/row-squyd.png" alt="SQUYD" style="height: 88px; width: 208px; flex: none; object-fit: contain; object-position: left center; display: block; mix-blend-mode: screen" />
+          <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 8px"><div style="font-size: clamp(24px, 2.4vw, 30px); line-height: 1.25; letter-spacing: -0.025em; font-weight: 500">SQUYD™</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #ADB3FF">Where Engineering Creates Living System</div></div>
+          <div style="flex: 1 1 260px; font-size: 17px; line-height: 1.6; color: #AFB3BD">The platform the programme is built on.</div>
+          <div style="width: 132px; flex: none; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8F9B; text-align: right">Status TBC</div>
+        </div>
+        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 32px; padding: 32px 0; border-bottom: 1px solid #1A1D26; animation: nits-in-sm linear both; animation-timeline: view(); animation-range: entry 15% cover 41%;" style-hover="background: #12141C">
+          <div style="width: 56px; flex: none; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8F9B">P—02</div>
+          <img src="assets/row-kraken.png" alt="KRAKEN" style="height: 88px; width: 208px; flex: none; object-fit: contain; object-position: left center; display: block; mix-blend-mode: screen" />
+          <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 8px"><div style="font-size: clamp(24px, 2.4vw, 30px); line-height: 1.25; letter-spacing: -0.025em; font-weight: 500">KRAKEN</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #ADB3FF">The Worlds First High-Throughput System</div></div>
+          <div style="flex: 1 1 260px; font-size: 17px; line-height: 1.6; color: #AFB3BD">3D bioprinting at the volume a real screening campaign consumes.</div>
+          <div style="width: 132px; flex: none; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8F9B; text-align: right">Status TBC</div>
+        </div>
+        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 32px; padding: 32px 0; border-bottom: 1px solid #1A1D26; animation: nits-in-sm linear both; animation-timeline: view(); animation-range: entry 22% cover 48%;" style-hover="background: #12141C">
+          <div style="width: 56px; flex: none; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8F9B">P—03</div>
+          <img src="assets/row-genesis.png" alt="GENESIS 1.3" style="height: 88px; width: 208px; flex: none; object-fit: contain; object-position: left center; display: block; mix-blend-mode: screen" />
+          <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 8px"><div style="font-size: clamp(24px, 2.4vw, 30px); line-height: 1.25; letter-spacing: -0.025em; font-weight: 500">GENESIS 1.3</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #ADB3FF">Digital Light 3D Bioprinter</div></div>
+          <div style="flex: 1 1 260px; font-size: 17px; line-height: 1.6; color: #AFB3BD">Let there be light. A full layer cured in one exposure.</div>
+          <div style="width: 132px; flex: none; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #ADB3FF; text-align: right">Built</div>
+        </div>
+        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 32px; padding: 32px 0; border-bottom: 1px solid #1A1D26; animation: nits-in-sm linear both; animation-timeline: view(); animation-range: entry 29% cover 55%;" style-hover="background: #12141C">
+          <div style="width: 56px; flex: none; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8F9B">P—04</div>
+          <img src="assets/row-morula.png" alt="MORULA" style="height: 88px; width: 208px; flex: none; object-fit: contain; object-position: left center; display: block; mix-blend-mode: screen" />
+          <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 8px"><div style="font-size: clamp(24px, 2.4vw, 30px); line-height: 1.25; letter-spacing: -0.025em; font-weight: 500">MORULA™</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #ADB3FF">Engineered microtissues. Advancing human health.</div></div>
+          <div style="flex: 1 1 260px; font-size: 17px; line-height: 1.6; color: #AFB3BD">Human physiologically relevant <em>in vitro</em> screening models.</div>
+          <div style="width: 132px; flex: none; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8F9B; text-align: right">Coming soon</div>
+        </div>
+      </div>
+      <sc-if value="{{ showNotes }}" hint-placeholder-val="{{ true }}">
+        <p style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8F9B">Two statuses are placeholders — confirm and I'll set them</p>
+      </sc-if>
+    </div>
+  </section>
+
+  <section id="act-05" data-screen-label="05 Partners" style="position: relative; background: #F4F3F0; color: #0B0C10; padding: clamp(96px, 12vw, 192px) clamp(20px, 4vw, 40px)">
+    <div style="display: flex; flex-direction: column; gap: 80px">
+      <div style="display: flex; flex-direction: column; gap: 48px">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #4B55EE">05 / Partners</div>
+        <h2 style="margin: 0; font-size: clamp(34px, 4.4vw, 56px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 600; max-width: 900px; text-wrap: balance; animation: nits-in linear both; animation-timeline: view(); animation-range: entry 10% cover 34%;">We look for people whose experiment does not fit the catalogue.</h2>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: #CFCCC4; border: 1px solid #CFCCC4">
+        <div style="background: #F4F3F0; display: flex; flex-direction: column; gap: 24px; padding: 32px 24px 40px; animation: nits-in-sm linear both; animation-timeline: view(); animation-range: entry 8% cover 34%;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #4B55EE">Labs</div><div style="display: flex; flex-direction: column; gap: 16px"><div style="font-size: 20px; line-height: 1.3; letter-spacing: -0.015em; font-weight: 500">Research groups</div><div style="font-size: 15px; line-height: 1.55; color: #43464F">Print the construct the protocol calls for instead of the one that happens to exist.</div></div></div>
+        <div style="background: #F4F3F0; display: flex; flex-direction: column; gap: 24px; padding: 32px 24px 40px; animation: nits-in-sm linear both; animation-timeline: view(); animation-range: entry 15% cover 41%;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #4B55EE">Clinical</div><div style="display: flex; flex-direction: column; gap: 16px"><div style="font-size: 20px; line-height: 1.3; letter-spacing: -0.015em; font-weight: 500">Hospitals &amp; diagnostics</div><div style="font-size: 15px; line-height: 1.55; color: #43464F">Tissue models for testing, training and diagnostic development.</div></div></div>
+        <div style="background: #F4F3F0; display: flex; flex-direction: column; gap: 24px; padding: 32px 24px 40px; animation: nits-in-sm linear both; animation-timeline: view(); animation-range: entry 22% cover 48%;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #4B55EE">Industry</div><div style="display: flex; flex-direction: column; gap: 16px"><div style="font-size: 20px; line-height: 1.3; letter-spacing: -0.015em; font-weight: 500">Pharma &amp; biotech R&amp;D</div><div style="font-size: 15px; line-height: 1.55; color: #43464F">Screen against human tissue earlier, with material you specified.</div></div></div>
+        <div style="background: #F4F3F0; display: flex; flex-direction: column; gap: 24px; padding: 32px 24px 40px; animation: nits-in-sm linear both; animation-timeline: view(); animation-range: entry 29% cover 55%;"><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #4B55EE">Capital</div><div style="display: flex; flex-direction: column; gap: 16px"><div style="font-size: 20px; line-height: 1.3; letter-spacing: -0.015em; font-weight: 500">Investors</div><div style="font-size: 15px; line-height: 1.55; color: #43464F">A hardware company in a field that has stopped being willing to wait.</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" data-screen-label="Contact" style="position: relative; background: #4B55EE; color: #FFFFFF; padding: clamp(96px, 12vw, 160px) clamp(20px, 4vw, 40px); overflow: hidden">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 80px; align-items: start">
+      <div style="display: flex; flex-direction: column; gap: 48px">
+        <img src="assets/nits-logo.png" alt="Nits Engineering" style="width: 72px; height: 72px; display: block; filter: brightness(0) invert(1)" />
+        <h2 style="margin: 0; font-size: clamp(40px, 6.2vw, 84px); line-height: 0.98; letter-spacing: -0.04em; font-weight: 600; text-wrap: balance; animation: nits-in linear both; animation-timeline: view(); animation-range: entry 10% cover 34%;">Tell us what you have been told cannot be built.</h2>
+        <p style="margin: 0; max-width: 560px; font-size: 19px; line-height: 1.6; color: #E4E6FF; text-wrap: pretty">We work directly with the people running the experiment. Send the construct, the constraint, or the question — whichever you have.</p>
+        <a href="mailto:hello@nitsengineering.com" style="align-self: start; display: inline-flex; align-items: center; gap: 12px; padding: 16px 28px; border-radius: 999px; background: #FFFFFF; color: #0B0C10; font-size: 15px; font-weight: 500; letter-spacing: -0.005em; opacity: 1" style-hover="background: #0B0C10; color: #FFFFFF; opacity: 1">
+          Request access
+          <span style="width: 6px; height: 6px; background: #4B55EE; border-radius: 50%; animation: nits-blink 2.4s infinite"></span>
+        </a>
+      </div>
+      <div style="border-top: 1px solid rgba(255,255,255,0.4)">
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.25); font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase"><span style="color: #E4E6FF">Enquiries</span><a href="mailto:hello@nitsengineering.com">hello@nitsengineering.com</a></div>
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.25); font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase"><span style="color: #E4E6FF">LinkedIn</span><a href="https://www.linkedin.com/company/nits-engineering/">nits-engineering</a></div>
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.25); font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; align-items: start"><span style="color: #E4E6FF">Registered office</span><span style="text-align: right; line-height: 1.7">NITS Engineering Pvt Ltd.<br />A15, 19 University Road,<br />Civil Lines, 110007, New Delhi, India</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; padding: 24px clamp(20px, 4vw, 40px); background: #0B0C10; color: #8A8F9B; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase">
+    <span>"Building A Healthier Tomorrow"</span>
+    <span>Copyright NITS Engineering Pvt. Ltd. 2026</span>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showProgress&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behaviour&quot;},&quot;showNotes&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behaviour&quot;}}">
+class Component extends DCLogic {
+  state = { p: 0 };
+  componentDidMount() {
+    this.chapters = [
+      ["act-00", "00 — Overview"],
+      ["act-01", "01 — Approach"],
+      ["act-02", "02 — Scale"],
+      ["act-03", "03 — Evidence"],
+      ["act-04", "04 — Programme"],
+      ["act-05", "05 — Partners"],
+    ];
+    this.onScroll = () => {
+      if (this.raf) return;
+      this.raf = requestAnimationFrame(() => {
+        this.raf = null;
+        const h = document.documentElement;
+        const max = h.scrollHeight - window.innerHeight;
+        this.setState({ p: max > 0 ? window.scrollY / max : 0 });
+      });
+    };
+    window.addEventListener("scroll", this.onScroll, { passive: true });
+    this.onScroll();
+  }
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.onScroll);
+    if (this.raf) cancelAnimationFrame(this.raf);
+  }
+  depth() {
+    const el = document.getElementById("act-02");
+    let t = 0;
+    if (el) {
+      const r = el.getBoundingClientRect();
+      t = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - window.innerHeight)));
+    }
+    return t < 0.34 ? "−1" : t < 0.67 ? "−3" : "−5";
+  }
+  navOnDark() {
+    for (const id of ["act-01", "act-02", "act-03", "act-04"]) {
+      const el = document.getElementById(id);
+      if (!el) continue;
+      const r = el.getBoundingClientRect();
+      if (r.top <= 70 && r.bottom > 70) return true;
+    }
+    return false;
+  }
+  renderVals() {
+    const onDark = this.navOnDark();
+    return {
+      showProgress: this.props.showProgress ?? true,
+      showNotes: this.props.showNotes ?? true,
+      progressWidth: (this.state.p * 100).toFixed(2) + "%",
+      depthExp: this.depth(),
+      navBg: onDark ? "rgba(11,12,16,0.72)" : "rgba(244,243,240,0.78)",
+      navFg: onDark ? "#F4F3F0" : "#0B0C10",
+      navBorder: onDark ? "rgba(244,243,240,0.12)" : "rgba(11,12,16,0.10)",
+    };
+  }
+}
+</script>
+</body>
+</html>

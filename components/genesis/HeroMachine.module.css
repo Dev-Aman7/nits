@@ -1,0 +1,25 @@
+/* Full-bleed instrument behind the hero headline.
+   Decorative only — never intercepts a pointer, never in the tab order. */
+
+.host {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* the drawing sits slightly right of centre so the headline's left
+     column stays the least busy part of the frame */
+  transform: translateX(12%);
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 880px) {
+  .host {
+    transform: none;
+    opacity: 0.55;
+  }
+}

@@ -1,0 +1,676 @@
+/* ==========================================================================
+   Section layout.
+   Sections are full-bleed with per-element max-widths — there is no wrapper
+   container anywhere in this design.
+   ========================================================================== */
+
+.section {
+  position: relative;
+  padding: var(--space-section) var(--space-container);
+}
+
+.sectionInk {
+  background: var(--ink);
+  color: var(--text-ink-1);
+  border-top: 1px solid var(--border-ink);
+}
+
+.sectionPaper {
+  background: var(--paper);
+  color: var(--text-paper-1);
+}
+
+/* Vertical rhythm: 80px between major blocks, 48px label → heading. */
+.blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+.headingGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.eyebrowInk {
+  color: var(--accent-on-ink);
+}
+
+.eyebrowPaper {
+  color: var(--accent-on-paper);
+}
+
+.heading {
+  max-width: var(--measure-heading);
+}
+
+/* ==========================================================================
+   00 — Overview (hero)
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 96px;
+  padding: 160px var(--space-container) 40px;
+  background: var(--paper);
+  overflow: hidden;
+}
+
+.heroRail {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+  color: var(--text-paper-3);
+}
+
+.heroBlock {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 64px;
+  align-items: end;
+  padding-bottom: 40px;
+}
+
+.heroHeadline {
+  flex: 1 1 520px;
+  max-width: var(--measure-hero);
+  animation: nits-rise var(--dur-entrance) var(--ease-entrance) both;
+}
+
+.heroAside {
+  flex: 0 1 300px;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  animation: nits-fade var(--dur-entrance-slow) 300ms both;
+}
+
+.heroLede {
+  color: var(--text-paper-2);
+}
+
+.heroCue {
+  color: var(--accent-on-paper);
+}
+
+.heroRule {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--border-paper);
+}
+
+/* ==========================================================================
+   01 — Approach
+   ========================================================================== */
+
+.approach {
+  background: var(--ink);
+  color: var(--text-ink-1);
+  overflow: hidden;
+}
+
+.dotField {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(244, 243, 240, 0.1) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.approachInner {
+  position: relative;
+}
+
+.thesis {
+  margin: 0 auto;
+  max-width: var(--measure-thesis);
+}
+
+.approachColumns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 64px;
+  max-width: var(--measure-thesis);
+  margin: 48px auto 0;
+}
+
+.approachColumns p {
+  color: var(--text-ink-2);
+}
+
+/* ==========================================================================
+   02 — Scale
+   ========================================================================== */
+
+.scale {
+  position: relative;
+  background: var(--ink);
+  color: var(--text-ink-1);
+  border-top: 1px solid var(--border-ink);
+}
+
+.scaleSplit {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.scaleRailCol {
+  flex: 1 1 340px;
+  max-width: 420px;
+}
+
+.scaleRail {
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 40px;
+  padding: 80px var(--space-container);
+  border-right: 1px solid var(--border-ink);
+}
+
+.scaleReadout {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.scaleReadoutLabel {
+  color: var(--text-ink-3);
+}
+
+.scaleNumber {
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
+  font-size: var(--numeric);
+  letter-spacing: -0.025em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.scaleExponent {
+  font-size: 22px;
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+
+.scaleUnit {
+  margin-left: 10px;
+  font-size: 24px;
+  align-self: flex-end;
+  color: var(--text-ink-3);
+}
+
+.scaleSteps {
+  flex: 3 1 520px;
+  min-width: 0;
+}
+
+.scaleStep {
+  min-height: 78vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+  padding: 80px var(--space-step);
+  border-bottom: 1px solid var(--border-ink);
+}
+
+.scaleStepLabel {
+  color: var(--accent-on-ink);
+}
+
+.scaleStepStatement {
+  max-width: var(--measure-prose-wide);
+}
+
+/* Below the flex bases the rail stacks above the steps, where sticky stops
+   earning its keep — so it is released rather than left half-working. */
+@media (max-width: 880px) {
+  .scaleRailCol {
+    max-width: none;
+    flex-basis: 100%;
+  }
+
+  .scaleRail {
+    position: static;
+    min-height: 0;
+    gap: 32px;
+    padding: var(--space-section) var(--space-container) 64px;
+    border-right: 0;
+    border-bottom: 1px solid var(--border-ink);
+  }
+
+  .scaleStep {
+    min-height: 0;
+    padding: 64px var(--space-container);
+  }
+}
+
+/* ==========================================================================
+   03 — Evidence
+   ========================================================================== */
+
+.evidenceLede {
+  max-width: var(--measure-prose);
+  color: var(--text-ink-2);
+}
+
+.evidenceLogo {
+  width: min(520px, 80%);
+  height: auto;
+  display: block;
+  mix-blend-mode: screen;
+}
+
+.evidenceHeadBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.evidenceFigureBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.figure {
+  position: relative;
+  aspect-ratio: 2.1 / 1;
+  min-height: 320px;
+  max-width: 100%;
+  border: 1px solid var(--border-ink-strong);
+  background-color: var(--surface-ink-raised);
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(244, 243, 240, 0.05) 0 1px,
+    transparent 1px 11px
+  );
+  overflow: hidden;
+}
+
+.figureImage {
+  object-fit: cover;
+}
+
+.figurePlaceholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  text-align: center;
+  color: var(--text-ink-3);
+}
+
+.figureRing {
+  width: 56px;
+  height: 56px;
+  border: 1px solid var(--border-ink-strong);
+  border-radius: var(--radius-circle);
+}
+
+.figureSub {
+  color: var(--text-ink-4);
+}
+
+.figureTag {
+  position: absolute;
+  left: 24px;
+  top: 24px;
+  color: var(--accent-on-ink);
+}
+
+.figureStatus {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  color: var(--text-ink-3);
+}
+
+.specCard {
+  color: var(--text-ink-2);
+}
+
+.specEyebrow {
+  color: var(--accent-on-ink);
+}
+
+.note {
+  color: var(--text-ink-3);
+}
+
+/* ==========================================================================
+   04 — Products
+   ========================================================================== */
+
+.productsHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 32px;
+}
+
+.productsCount {
+  color: var(--text-ink-3);
+  text-align: right;
+}
+
+.productsTable {
+  border-top: 1px solid var(--border-ink-strong);
+}
+
+.productRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 32px;
+  padding: 32px 0;
+  border-bottom: 1px solid var(--border-ink);
+  transition: background var(--dur-hover) var(--ease-default);
+}
+
+.productRow:hover {
+  background: var(--surface-ink-raised);
+}
+
+.productIndex {
+  width: 56px;
+  flex: none;
+  color: var(--text-ink-3);
+}
+
+.productLogo {
+  height: 88px;
+  width: 208px;
+  flex: none;
+  object-fit: contain;
+  object-position: left center;
+  display: block;
+  /* Applied to every product logo or none — mixing makes them read at
+     different weights in the same row set. */
+  mix-blend-mode: screen;
+}
+
+.productName {
+  flex: 1 1 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.productDescriptor {
+  color: var(--accent-on-ink);
+}
+
+.productDescription {
+  flex: 1 1 260px;
+  color: var(--text-ink-2);
+}
+
+.productStatus {
+  width: 132px;
+  flex: none;
+  text-align: right;
+  color: var(--text-ink-3);
+  /* No-op while the row is one line (the name and description columns absorb
+     all free space); once the row wraps, it keeps the status terminating the
+     stack flush right instead of stranding a 132px box mid-row. */
+  margin-left: auto;
+}
+
+/* Colour alone carries the state — there is no badge container. */
+.productStatus[data-status="built"] {
+  color: var(--accent-on-ink);
+}
+
+/* ==========================================================================
+   05 — Partners
+   ========================================================================== */
+
+.partnerCard {
+  color: var(--text-paper-1);
+}
+
+.partnerEyebrow {
+  color: var(--accent-on-paper);
+}
+
+.partnerBody {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.partnerCopy {
+  color: var(--text-paper-2);
+}
+
+/* ==========================================================================
+   Contact — the only saturated ground
+   ========================================================================== */
+
+.contact {
+  position: relative;
+  background: var(--indigo);
+  color: var(--text-indigo-1);
+  padding: clamp(96px, 12vw, 160px) var(--space-container);
+  overflow: hidden;
+}
+
+.contactGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 80px;
+  align-items: start;
+}
+
+.contactLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.contactLogo {
+  width: 72px;
+  height: 72px;
+  display: block;
+  filter: brightness(0) invert(1);
+}
+
+.contactLede {
+  max-width: var(--measure-lede);
+  color: var(--text-indigo-2);
+}
+
+.contactCta {
+  align-self: start;
+}
+
+.contactList {
+  border-top: 1px solid var(--border-on-indigo);
+}
+
+.contactRow {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--divider-on-indigo);
+}
+
+.contactKey {
+  color: var(--text-indigo-2);
+}
+
+.contactValue {
+  text-align: right;
+  line-height: 1.7;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 24px var(--space-container);
+  background: var(--ink);
+  color: var(--text-ink-3);
+}
+
+/* ==========================================================================
+   Genesis illustration layer
+
+   Three canvases sit behind existing content — the instrument in the hero,
+   the cell field in Scale, the drawing in the Evidence figure. Nothing above
+   this point changed; these rules only lift the copy clear of them and give
+   it enough ground to stay legible.
+
+   Each canvas is z-index 0 inside its own section, so a section's content
+   needs a stacking context of its own to paint over it.
+   ========================================================================== */
+
+/* ---- 00 Overview ---- */
+
+.heroRail,
+.heroBlock {
+  position: relative;
+  z-index: 1;
+}
+
+/* A pool of paper under the headline column. The machine is drawn right of
+   centre, so the scrim only has to cover the left two-thirds and can fall
+   away before it reaches the drawing. */
+.heroBlock::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -56px;
+  bottom: -24px;
+  left: calc(-1 * var(--space-container));
+  right: 26%;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    var(--paper) 0%,
+    var(--paper) 62%,
+    rgba(244, 243, 240, 0) 100%
+  );
+}
+
+/* ---- 02 Scale ---- */
+
+.scaleSplit {
+  position: relative;
+  z-index: 1;
+}
+
+/* The rail is a defined column with a hairline edge — it takes solid ink
+   rather than a scrim, and the field lives entirely with the steps. */
+.scaleRail {
+  background: var(--ink);
+}
+
+.scaleStep {
+  position: relative;
+}
+
+.scaleStep > * {
+  position: relative;
+  z-index: 1;
+}
+
+.scaleStep::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(11, 12, 16, 0.94) 0%,
+    rgba(11, 12, 16, 0.88) 42%,
+    rgba(11, 12, 16, 0) 100%
+  );
+}
+
+/* The lede column and the mono rail sit over the drawing too — each gets its
+   own pool of paper with a feathered edge, rather than one scrim wide enough
+   to cover the machine entirely. */
+.heroAside,
+.heroRail > * {
+  position: relative;
+}
+
+.heroAside::before,
+.heroRail > *::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    var(--paper) 0%,
+    var(--paper) 64%,
+    rgba(244, 243, 240, 0) 94%
+  );
+}
+
+.heroAside::before {
+  inset: -30px -40px;
+}
+
+.heroRail > *::before {
+  inset: -12px -26px;
+}
+
+@media (max-width: 880px) {
+  /* stacked: the field is behind everything, so the scrim covers the width */
+  .scaleStep::before {
+    background: rgba(11, 12, 16, 0.88);
+  }
+
+  .heroBlock::before {
+    right: calc(-1 * var(--space-container));
+    background: rgba(244, 243, 240, 0.9);
+  }
+}
+
+/* ---- 03 Evidence ---- */
+
+/* The figure's mono corner tags must stay above the drawing inside it. */
+.figureTag,
+.figureStatus {
+  z-index: 2;
+}
+
+/* Once the WebGL drawing is running, the mono placeholder it replaced is no
+   longer the state of this figure — it stays in the markup purely as the
+   no-WebGL fallback. */
+.figure[data-gl="on"] .figurePlaceholder {
+  display: none;
+}

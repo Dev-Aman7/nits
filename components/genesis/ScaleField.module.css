@@ -1,0 +1,28 @@
+/* The cell field behind the Scale section.
+
+   The host covers the section exactly; the canvas inside it is sticky, so the
+   drawing holds at the top of the viewport for the length of the three steps
+   and stops dead at the section's edges — it never bleeds into Approach above
+   or Evidence below. */
+
+.host {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.canvas {
+  position: sticky;
+  top: 0;
+  display: block;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+}
+
+@media (max-width: 880px) {
+  .host {
+    opacity: 0.5;
+  }
+}

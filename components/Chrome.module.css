@@ -1,0 +1,188 @@
+/* Progress bar + navbar — the two fixed elements. */
+
+.progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: var(--z-progress);
+  height: 2px;
+  background: var(--progress-track);
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--accent);
+}
+
+/* -- Navbar ---------------------------------------------------------------
+   The only glassmorphism in the design: translucent ground + 16px backdrop
+   blur + a 1px hairline. Ground, text and border all swap on 400ms as an ink
+   section crosses the 70px scroll line.                                     */
+.nav {
+  --nav-rule: var(--nav-border-paper);
+  --nav-ground: var(--nav-bg-paper);
+  /* Opaque counterpart for the mobile sheet — glass is reserved for the bar. */
+  --nav-solid: var(--paper);
+  --nav-sheet-rule: var(--border-paper-strong);
+
+  position: fixed;
+  top: 2px;
+  left: 0;
+  right: 0;
+  z-index: var(--z-nav);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 16px var(--space-container);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: var(--nav-ground);
+  color: var(--text-paper-1);
+  border-bottom: 1px solid var(--nav-rule);
+  transition: background var(--dur-theme) var(--ease-default),
+    color var(--dur-theme) var(--ease-default),
+    border-color var(--dur-theme) var(--ease-default);
+}
+
+.nav[data-ground="ink"] {
+  --nav-rule: var(--nav-border-ink);
+  --nav-ground: var(--nav-bg-ink);
+  --nav-solid: var(--ink);
+  --nav-sheet-rule: var(--border-ink-strong);
+  color: var(--text-ink-1);
+}
+
+.wordmark {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: none;
+}
+
+.wordmarkImg {
+  height: 32px;
+  width: 72px;
+  object-fit: contain;
+  display: block;
+}
+
+/* On desktop the group dissolves, so wordmark / links / CTA stay three
+   space-between children exactly as in v3. */
+.group {
+  display: contents;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 32px;
+  font-size: var(--ui);
+  letter-spacing: -0.005em;
+}
+
+.link {
+  color: inherit;
+  opacity: 0.72;
+}
+
+.link:hover {
+  opacity: 1;
+}
+
+.cta {
+  flex: none;
+}
+
+.toggle {
+  display: none;
+}
+
+/* -- Collapsed pattern ----------------------------------------------------
+   design.md records the missing mobile menu as a gap in v3's implementation,
+   not a decision — below the width where the three-part row stops fitting,
+   the links and CTA move into a sheet behind a hairline toggle. Everything
+   here is scoped to the query; the desktop row is untouched.                */
+@media (max-width: 900px) {
+  .toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    background: transparent;
+    color: inherit;
+    border: 1px solid currentColor;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-plex-mono), "IBM Plex Mono", monospace;
+    font-size: var(--label);
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .toggleBars {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 3px;
+    width: 14px;
+  }
+
+  .toggleBars span {
+    display: block;
+    height: 1px;
+    background: currentColor;
+    transition: transform var(--dur-hover) var(--ease-default),
+      opacity var(--dur-hover) var(--ease-default);
+  }
+
+  .toggle[aria-expanded="true"] .toggleBars span:nth-child(1) {
+    transform: translateY(4px) rotate(45deg);
+  }
+
+  .toggle[aria-expanded="true"] .toggleBars span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .toggle[aria-expanded="true"] .toggleBars span:nth-child(3) {
+    transform: translateY(-4px) rotate(-45deg);
+  }
+
+  .group {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    padding: 0 var(--space-container) 24px;
+    /* Opaque: a nested backdrop-filter inside the already-blurred bar does not
+       sample the page behind it, and a full-height sheet has to stay legible. */
+    background: var(--nav-solid);
+    border-bottom: 1px solid var(--nav-sheet-rule);
+  }
+
+  .group[data-open="false"] {
+    display: none;
+  }
+
+  .links {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .links .link {
+    padding: 18px 0;
+    border-bottom: 1px solid var(--nav-sheet-rule);
+  }
+
+  .cta {
+    align-self: start;
+    margin-top: 24px;
+  }
+}
