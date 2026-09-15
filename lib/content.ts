@@ -166,12 +166,55 @@ export const about = {
       | string
       | null,
   bodyPlaceholder: "Body placeholder — who we are, why we are trusted",
-  /** Mono metadata, right-aligned per design rule 15. */
+  /** Mono metadata, right-aligned per design rule 15. Kept for later; not shown in the pinned card stage. */
   facts: [
     { key: "Based", value: "New Delhi, India" },
     { key: "Field", value: "Bio-medical instrumentation" },
     { key: "Instruments", value: "Four" },
     { key: "Working with", value: "Clinical · Academic · Industry" },
+  ],
+  /** Portrait cards scrubbed on the left of the About stage. Swap accents/copy when real photos land. */
+  cards: [
+    {
+      id: "card-1",
+      name: "Aanya Mehta",
+      role: "Clinical collaborator",
+      blurb: "Specifies instruments where the experiment actually happens — at the bench.",
+      initials: "AM",
+      accent: "#2A3A4A",
+    },
+    {
+      id: "card-2",
+      name: "Rohan Desai",
+      role: "University lab lead",
+      blurb: "Turns a research question into a repeatable instrument brief.",
+      initials: "RD",
+      accent: "#3D2F28",
+    },
+    {
+      id: "card-3",
+      name: "Priya Nair",
+      role: "Industry R&D",
+      blurb: "Bridges scale-up constraints with what the protocol still needs.",
+      initials: "PN",
+      accent: "#243628",
+    },
+    {
+      id: "card-4",
+      name: "Kabir Singh",
+      role: "Hospital partner",
+      blurb: "Keeps clinical workflow in the room while the machine is defined.",
+      initials: "KS",
+      accent: "#2C2A3D",
+    },
+    {
+      id: "card-5",
+      name: "Meera Iyer",
+      role: "Academic investigator",
+      blurb: "Asks for the instrument the paper will eventually need — not the one on a catalog page.",
+      initials: "MI",
+      accent: "#3A2A2A",
+    },
   ],
 } as const;
 

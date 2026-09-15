@@ -1111,14 +1111,43 @@
 }
 
 /* ==========================================================================
-   05 — About: prose beside a hairline metadata column
+   05 — About: text (left) + India map (right)
    ========================================================================== */
 
-.aboutGrid {
+.aboutSplit {
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-  gap: clamp(32px, 5vw, 96px);
-  align-items: start;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.35fr);
+  gap: clamp(24px, 4vw, 48px);
+  align-items: stretch;
+  min-height: min(78vh, 720px);
+}
+
+.aboutLeftCol {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 3vh, 40px);
+  min-height: 0;
+  min-width: 0;
+  justify-content: center;
+}
+
+.aboutHeading {
+  max-width: min(var(--measure-heading), 16ch);
+}
+
+.aboutMapCol {
+  position: relative;
+  min-width: 0;
+  min-height: 320px;
+  color: var(--text-paper-1);
+}
+
+.aboutMap {
+  position: absolute !important;
+  inset: 0;
+  min-height: 0 !important;
+  height: 100% !important;
+  width: 100%;
 }
 
 .aboutFacts {
@@ -1147,8 +1176,31 @@
 }
 
 @media (max-width: 820px) {
-  .aboutGrid {
+  .aboutSplit {
     grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(280px, 0.55fr);
+    min-height: 0;
+  }
+
+  .aboutLeftCol {
+    min-height: 0;
+    justify-content: flex-start;
+  }
+
+  .aboutMapCol {
+    min-height: 280px;
+  }
+
+  .aboutMap {
+    position: relative !important;
+    min-height: 280px !important;
+    height: 280px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aboutSplit {
+    min-height: 0;
   }
 }
 
