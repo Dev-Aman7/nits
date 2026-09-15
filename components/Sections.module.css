@@ -1111,38 +1111,15 @@
 }
 
 /* ==========================================================================
-   05 — About: pinned cards (left) + India map (right)
+   05 — About: text (left) + India map (right)
    ========================================================================== */
 
-.aboutSection {
-  /* Track owns vertical space; sticky stage fills the viewport. */
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-.aboutTrack {
-  position: relative;
-  width: 100%;
-}
-
-.aboutSticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  min-height: 560px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.aboutStickyInner {
-  flex: 1;
+.aboutSplit {
   display: grid;
-  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.6fr);
-  gap: clamp(12px, 2vw, 32px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: clamp(24px, 4vw, 48px);
   align-items: stretch;
-  padding: var(--space-section) 0;
-  min-height: 0;
+  min-height: min(70vh, 640px);
 }
 
 .aboutLeftCol {
@@ -1151,25 +1128,17 @@
   gap: clamp(20px, 3vh, 40px);
   min-height: 0;
   min-width: 0;
+  justify-content: center;
 }
 
 .aboutHeading {
   max-width: min(var(--measure-heading), 16ch);
 }
 
-.aboutCardsCol {
-  position: relative;
-  flex: 1;
-  min-height: 320px;
-}
-
 .aboutMapCol {
   position: relative;
   min-width: 0;
-  min-height: 0;
-  height: 100%;
-  /* Bleed past sticky vertical padding so the map fills the full viewport column */
-  margin-block: calc(var(--space-section) * -1);
+  min-height: 320px;
   color: var(--text-paper-1);
 }
 
@@ -1207,48 +1176,31 @@
 }
 
 @media (max-width: 820px) {
-  .aboutStickyInner {
+  .aboutSplit {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto minmax(240px, 0.55fr);
+    grid-template-rows: auto minmax(280px, 0.55fr);
+    min-height: 0;
   }
 
   .aboutLeftCol {
     min-height: 0;
-  }
-
-  .aboutCardsCol {
-    min-height: 280px;
+    justify-content: flex-start;
   }
 
   .aboutMapCol {
     min-height: 280px;
-    height: auto;
-    margin-block: 0;
   }
 
   .aboutMap {
     position: relative !important;
     min-height: 280px !important;
-  }
-
-  .aboutSticky {
-    min-height: 100svh;
+    height: 280px !important;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .aboutTrack {
-    height: auto !important;
-  }
-
-  .aboutSticky {
-    position: relative;
-    height: auto;
+  .aboutSplit {
     min-height: 0;
-  }
-
-  .aboutStickyInner {
-    padding-bottom: var(--space-section);
   }
 }
 
