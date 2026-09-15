@@ -28,6 +28,11 @@ export interface CursorDrivenParticleIndiaMapProps {
   color?: string;
   /** Fill alpha when sampling the map path (0–1) */
   sampleAlpha?: number;
+  /**
+   * When true, particles start scattered and gather into the map as the
+   * closest section scrolls into view.
+   */
+  assembleOnScroll?: boolean;
 }
 
 class Particle {
@@ -35,6 +40,10 @@ class Particle {
   y: number;
   originX: number;
   originY: number;
+  scatterX: number;
+  scatterY: number;
+  /** Per-particle stagger offset in [0, ~0.35] applied to assemble progress */
+  assembleDelay: number;
   vx: number;
   vy: number;
   size: number;
@@ -56,14 +65,27 @@ class Particle {
     friction: number,
     ambientJitter: number,
     birthJitter: number,
-    rng: () => number
+    rng: () => number,
+    scatter: { x: number; y: number; delay: number } | null
   ) {
-    this.x = x + (rng() - 0.5) * birthJitter;
-    this.y = y + (rng() - 0.5) * birthJitter;
     this.originX = x;
     this.originY = y;
-    this.vx = (rng() - 0.5) * 5;
-    this.vy = (rng() - 0.5) * 5;
+    this.scatterX = scatter?.x ?? x;
+    this.scatterY = scatter?.y ?? y;
+    this.assembleDelay = scatter?.delay ?? 0;
+
+    if (scatter) {
+      this.x = scatter.x;
+      this.y = scatter.y;
+      this.vx = 0;
+      this.vy = 0;
+    } else {
+      this.x = x + (rng() - 0.5) * birthJitter;
+      this.y = y + (rng() - 0.5) * birthJitter;
+      this.vx = (rng() - 0.5) * 5;
+      this.vy = (rng() - 0.5) * 5;
+    }
+
     this.size = size;
     this.color = color;
     this.dispersion = dispersion;
@@ -73,27 +95,44 @@ class Particle {
     this.ambientJitter = ambientJitter;
   }
 
-  update(mouseX: number, mouseY: number, rng: () => number) {
-    const dx = mouseX - this.x;
-    const dy = mouseY - this.y;
-    const distance = Math.hypot(dx, dy);
-    const radius = this.interactionRadius;
+  update(
+    mouseX: number,
+    mouseY: number,
+    rng: () => number,
+    assemble: number,
+    cursorEnabled: boolean
+  ) {
+    const span = Math.max(0.001, 1 - this.assembleDelay);
+    const local = Math.max(0, Math.min(1, (assemble - this.assembleDelay) / span));
+    // Ease-out cubic: slow approach into the silhouette
+    const t = 1 - Math.pow(1 - local, 3);
+    const targetX = this.scatterX + (this.originX - this.scatterX) * t;
+    const targetY = this.scatterY + (this.originY - this.scatterY) * t;
 
-    if (distance < radius && mouseX !== -1000 && mouseY !== -1000) {
-      const force = (radius - distance) / radius;
-      this.vx -= (dx / distance) * force * this.dispersion;
-      this.vy -= (dy / distance) * force * this.dispersion;
+    if (cursorEnabled) {
+      const dx = mouseX - this.x;
+      const dy = mouseY - this.y;
+      const distance = Math.hypot(dx, dy);
+      const radius = this.interactionRadius;
+
+      if (distance < radius && mouseX !== -1000 && mouseY !== -1000) {
+        const force = (radius - distance) / radius;
+        this.vx -= (dx / distance) * force * this.dispersion;
+        this.vy -= (dy / distance) * force * this.dispersion;
+      }
     }
 
-    this.vx += (this.originX - this.x) * this.returnSpd;
-    this.vy += (this.originY - this.y) * this.returnSpd;
+    this.vx += (targetX - this.x) * this.returnSpd;
+    this.vy += (targetY - this.y) * this.returnSpd;
     this.vx *= this.friction;
     this.vy *= this.friction;
 
-    const distToOrigin = Math.hypot(this.x - this.originX, this.y - this.originY);
-    if (distToOrigin < 1 && this.ambientJitter > 0 && rng() > 0.95) {
-      this.vx += (rng() - 0.5) * this.ambientJitter;
-      this.vy += (rng() - 0.5) * this.ambientJitter;
+    if (cursorEnabled) {
+      const distToOrigin = Math.hypot(this.x - this.originX, this.y - this.originY);
+      if (distToOrigin < 1 && this.ambientJitter > 0 && rng() > 0.95) {
+        this.vx += (rng() - 0.5) * this.ambientJitter;
+        this.vy += (rng() - 0.5) * this.ambientJitter;
+      }
     }
 
     this.x += this.vx;
@@ -119,6 +158,28 @@ function createRng(seed: number) {
   };
 }
 
+function clamp01(n: number) {
+  return Math.max(0, Math.min(1, n));
+}
+
+function smoothstep(edge0: number, edge1: number, x: number) {
+  const t = clamp01((x - edge0) / (edge1 - edge0));
+  return t * t * (3 - 2 * t);
+}
+
+/**
+ * Section top crossing viewport: 0 while still below the fold,
+ * 1 once the section has settled near the top — long scrub for a slow gather.
+ */
+function measureAssembleProgress(section: HTMLElement): number {
+  const rect = section.getBoundingClientRect();
+  const vh = window.innerHeight || 1;
+  const start = vh * 1.05;
+  const end = vh * 0.12;
+  const raw = clamp01((start - rect.top) / (start - end));
+  return smoothstep(0, 1, raw);
+}
+
 export function CursorDrivenParticleIndiaMap({
   className,
   particleSize = 1.4,
@@ -132,6 +193,7 @@ export function CursorDrivenParticleIndiaMap({
   seed = 42,
   color,
   sampleAlpha = 1,
+  assembleOnScroll = false,
 }: CursorDrivenParticleIndiaMapProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -149,6 +211,37 @@ export function CursorDrivenParticleIndiaMap({
     let containerWidth = 0;
     let containerHeight = 0;
     let rng = createRng(seed);
+    let assembleTarget = assembleOnScroll ? 0 : 1;
+    let assemble = assembleTarget;
+    let reducedMotion = false;
+    /** Per-frame blend toward scroll target — lower = slower, smoother gather */
+    const ASSEMBLE_SMOOTH = 0.016;
+
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const syncReduced = () => {
+      reducedMotion = media.matches;
+      if (reducedMotion) {
+        assembleTarget = 1;
+        assemble = 1;
+      }
+    };
+    syncReduced();
+
+    const sectionEl =
+      containerRef.current?.closest("section") ??
+      document.getElementById("act-05");
+
+    const updateAssembleTarget = () => {
+      if (!assembleOnScroll || reducedMotion) {
+        assembleTarget = 1;
+        return;
+      }
+      if (!sectionEl) {
+        assembleTarget = 1;
+        return;
+      }
+      assembleTarget = measureAssembleProgress(sectionEl);
+    };
 
     const init = () => {
       const container = containerRef.current;
@@ -199,16 +292,36 @@ export function CursorDrivenParticleIndiaMap({
 
       const step = Math.max(1, Math.floor(particleDensity * dpr));
       const birthJitter = 10;
+      const cx = containerWidth / 2;
+      const cy = containerHeight / 2;
+      const scatterRadius = Math.hypot(containerWidth, containerHeight) * 0.55;
 
       for (let y = 0; y < mapPixels.height; y += step) {
         for (let x = 0; x < mapPixels.width; x += step) {
           const index = (y * mapPixels.width + x) * 4;
           const alpha = mapPixels.data[index + 3] ?? 0;
           if (alpha > 128) {
+            const ox = x / dpr;
+            const oy = y / dpr;
+
+            let scatter: { x: number; y: number; delay: number } | null = null;
+            if (assembleOnScroll && !reducedMotion) {
+              const angle = rng() * Math.PI * 2;
+              const dist = scatterRadius * (0.35 + rng() * 0.65);
+              // Soft cloud bias: mix radial burst with canvas-wide noise
+              const noiseX = rng() * containerWidth;
+              const noiseY = rng() * containerHeight;
+              scatter = {
+                x: cx + Math.cos(angle) * dist * 0.55 + noiseX * 0.45 - cx * 0.45,
+                y: cy + Math.sin(angle) * dist * 0.55 + noiseY * 0.45 - cy * 0.45,
+                delay: rng() * 0.32,
+              };
+            }
+
             particles.push(
               new Particle(
-                x / dpr,
-                y / dpr,
+                ox,
+                oy,
                 particleSize,
                 fillColor,
                 dispersionStrength,
@@ -217,7 +330,8 @@ export function CursorDrivenParticleIndiaMap({
                 friction,
                 ambientJitter,
                 birthJitter,
-                rng
+                rng,
+                scatter
               )
             );
           }
@@ -225,12 +339,22 @@ export function CursorDrivenParticleIndiaMap({
       }
 
       ctx.clearRect(0, 0, containerWidth, containerHeight);
+      updateAssembleTarget();
+      if (!assembleOnScroll || reducedMotion) assemble = assembleTarget;
     };
 
     const animate = () => {
+      updateAssembleTarget();
+      if (assembleOnScroll && !reducedMotion) {
+        assemble += (assembleTarget - assemble) * ASSEMBLE_SMOOTH;
+        if (Math.abs(assembleTarget - assemble) < 0.0005) assemble = assembleTarget;
+      } else {
+        assemble = assembleTarget;
+      }
+      const cursorEnabled = !assembleOnScroll || assemble > 0.82;
       ctx.clearRect(0, 0, containerWidth, containerHeight);
       for (const particle of particles) {
-        particle.update(mouseX, mouseY, rng);
+        particle.update(mouseX, mouseY, rng, assemble, cursorEnabled);
         particle.draw(ctx);
       }
       animationFrameId = requestAnimationFrame(animate);
@@ -256,6 +380,12 @@ export function CursorDrivenParticleIndiaMap({
       if (t) setPointer(t.clientX, t.clientY);
     };
 
+    const onScrollOrResize = () => updateAssembleTarget();
+    const onReducedChange = () => {
+      syncReduced();
+      init();
+    };
+
     const timeoutId = setTimeout(() => {
       init();
       animate();
@@ -270,6 +400,10 @@ export function CursorDrivenParticleIndiaMap({
       attributeFilter: ["class"],
     });
 
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize, { passive: true });
+    media.addEventListener("change", onReducedChange);
+
     canvas.addEventListener("mousemove", handleMouseMove);
     canvas.addEventListener("mouseleave", handleMouseLeave);
     canvas.addEventListener("touchstart", handleTouchStart, { passive: true });
@@ -280,6 +414,9 @@ export function CursorDrivenParticleIndiaMap({
       clearTimeout(timeoutId);
       resizeObserver.disconnect();
       themeObserver.disconnect();
+      window.removeEventListener("scroll", onScrollOrResize);
+      window.removeEventListener("resize", onScrollOrResize);
+      media.removeEventListener("change", onReducedChange);
       canvas.removeEventListener("mousemove", handleMouseMove);
       canvas.removeEventListener("mouseleave", handleMouseLeave);
       canvas.removeEventListener("touchstart", handleTouchStart);
@@ -299,6 +436,7 @@ export function CursorDrivenParticleIndiaMap({
     seed,
     color,
     sampleAlpha,
+    assembleOnScroll,
   ]);
 
   return (

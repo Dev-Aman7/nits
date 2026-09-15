@@ -7,6 +7,7 @@ import { CursorDrivenParticleIndiaMap } from "../ui/cursor-driven-particle-india
  * 05 — About. Trust.
  *
  * Prose on the left, particle India map on the right.
+ * Map particles gather from a scatter field as the section scrolls into view.
  */
 export function About() {
   return (
@@ -14,7 +15,6 @@ export function About() {
       <div className={s.aboutSplit}>
         <div className={s.aboutLeftCol}>
           <div className={s.headingGroup}>
-            <div className={`mono ${s.eyebrowPaper}`}>05 / About</div>
             {about.heading ? (
               <Reveal as="h2" id="about-heading" name="nits-in" className={`h2 ${s.aboutHeading}`}>
                 {about.heading}
@@ -38,10 +38,12 @@ export function About() {
         <div className={s.aboutMapCol}>
           <CursorDrivenParticleIndiaMap
             className={s.aboutMap}
+            assembleOnScroll
             particleDensity={3}
             particleSize={1}
             dispersionStrength={1}
-            returnSpeed={0.08}
+            returnSpeed={0.028}
+            friction={0.9}
             interactionRadius={130}
             seed={42}
           />
