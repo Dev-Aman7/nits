@@ -28,9 +28,7 @@ export const site = {
 
 /** Absolute paths so section links work from /careers as well as home. */
 export const navLinks = [
-  { label: "Approach", href: "/#act-01" },
-  { label: "Scale", href: "/#act-02" },
-  { label: "Instruments", href: "/#act-04" },
+  { label: "Products", href: "/#act-04" },
   { label: "About", href: "/#act-05" },
   { label: "Partners", href: "/#act-06" },
   { label: "Careers", href: "/careers" },
