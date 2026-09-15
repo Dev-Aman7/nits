@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import {
   CELL_COUNT, CELL_VERTEX_SHADER, CELL_FRAGMENT_SHADER,
@@ -36,9 +36,6 @@ import s from './GenesisField.module.css';
  * All three sections are ink, so the palette never changes across the arc.
  */
 
-const SUSPENSION = { id: 'SUSPENSION', status: 'CELL-LADEN HYDROGEL · GELMA 8% W/V' };
-const ASSEMBLY = { id: 'SELF-ASSEMBLY', status: 'SPHEROIDS FORMING · THE CELL' };
-
 /* Approach stages, as a fraction of its scroll.
    COMPACT_BY is 1: the compaction runs to the section's last pixel. It used to
    finish at 0.82, which left half a viewport of motionless spheroids before
@@ -70,8 +67,6 @@ const ease = (t: number) => t * t * (3 - 2 * t);
 export function GenesisField() {
   const hostRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [state, setState] = useState(SUSPENSION);
-  const [showReadout, setShowReadout] = useState(false);
 
   useEffect(() => {
     const host = hostRef.current;
@@ -204,7 +199,6 @@ export function GenesisField() {
     let smoothA = pApproach;
     let smoothS = pScale;
     let smoothX = pDisperse;
-    let lastReadout = -1;
 
     const loop = (now: number) => {
       raf = requestAnimationFrame(loop);
@@ -212,10 +206,7 @@ export function GenesisField() {
       last = now;
 
       host.style.setProperty('--seq-show', active ? '1' : '0');
-      if (!active) {
-        if (lastReadout !== 0) { lastReadout = 0; setShowReadout(false); }
-        return;
-      }
+      if (!active) return;
 
       const t = sharedTime(reduced);
       const k = Math.min(dt * 6, 1);
@@ -263,13 +254,6 @@ export function GenesisField() {
         spin = t * 0.045 + arrive * 0.3 * (1 - mix);
         lookY = HANDOFF.lookY * mix;
         lateral = HANDOFF.lateral * mix;
-
-        const next = mix > 0.5 ? 2 : 1;
-        if (next !== lastReadout) {
-          lastReadout = next;
-          setShowReadout(true);
-          setState(next === 2 ? ASSEMBLY : SUSPENSION);
-        }
       } else if (phase === 'scale') {
         /* ---- Scale: spheroids, layers, construct ---- */
         const t1 = ease(ramp(smoothS, SCALE_STAGES[0].hold, SCALE_STAGES[0].hold + SCALE_RAMP));
@@ -299,8 +283,6 @@ export function GenesisField() {
         lookY = HANDOFF.lookY + (0.1 * Math.min(stage, 2)) / 2;
         /* field opposite the step's copy: cell right, tissue left, construct right */
         lateral = HANDOFF.lateral * (1 - 2 * t1 + 2 * t2);
-
-        if (lastReadout !== 0) { lastReadout = 0; setShowReadout(false); }
       } else {
         /* ---- Instruments: the construct comes apart and spreads ----
 
@@ -338,8 +320,6 @@ export function GenesisField() {
         lookY = HANDOFF.lookY + 0.1;
         /* Held right of the sticky rail, but not pinned to the far edge. */
         lateral = HANDOFF.lateral * (1 + 0.15 * spread);
-
-        if (lastReadout !== 0) { lastReadout = 0; setShowReadout(false); }
       }
 
       mat.uniforms.uAlpha.value = Math.max(0, alpha);
@@ -364,18 +344,8 @@ export function GenesisField() {
   }, []);
 
   return (
-    <>
-      <div ref={hostRef} className={s.host} aria-hidden="true">
-        <canvas ref={canvasRef} className={s.canvas} />
-      </div>
-      <div
-        className={s.readout}
-        aria-hidden="true"
-        style={{ opacity: showReadout ? 1 : 0 }}
-      >
-        <div className={`mono ${s.readoutId}`}>{state.id}</div>
-        <div className={`mono ${s.readoutStatus}`}>{state.status}</div>
-      </div>
-    </>
+    <div ref={hostRef} className={s.host} aria-hidden="true">
+      <canvas ref={canvasRef} className={s.canvas} />
+    </div>
   );
 }

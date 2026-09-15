@@ -32,38 +32,8 @@
   height: 100%;
 }
 
-/* Fixed, not sticky: it belongs to the field rather than to either section,
-   and is hidden outright once Scale takes over — Scale has its own depth
-   readout in the rail and two readouts would compete. */
-.readout {
-  position: fixed;
-  left: 0;
-  bottom: 24px;
-  z-index: 3;
-  padding: 0 var(--space-container);
-  pointer-events: none;
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  transition: opacity 260ms ease;
-}
-
-.readoutId {
-  color: var(--accent-on-ink);
-}
-
-.readoutStatus {
-  color: var(--text-ink-3);
-}
-
 @media (max-width: 880px) {
   .host {
     opacity: calc(var(--seq-show, 0) * 0.66);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .readout {
-    transition: none;
   }
 }

@@ -32,7 +32,6 @@ export function Instruments() {
       <div className={s.instrumentsSplit}>
         <div className={s.instrumentsRailCol}>
           <div className={s.instrumentsRail}>
-            <div className={`mono ${s.eyebrowInk}`}>{instruments.eyebrow}</div>
             {instruments.heading ? (
               <h2 id="instruments-heading" className="h2">
                 {instruments.heading}
