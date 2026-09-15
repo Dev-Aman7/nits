@@ -45,7 +45,7 @@ export function About() {
             returnSpeed={0.028}
             friction={0.9}
             interactionRadius={130}
-            seed={42}
+            seed={4}
           />
         </div>
       </div>

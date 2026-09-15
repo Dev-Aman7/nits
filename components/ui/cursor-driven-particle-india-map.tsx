@@ -35,6 +35,13 @@ export interface CursorDrivenParticleIndiaMapProps {
   assembleOnScroll?: boolean;
 }
 
+/** Ease-out cubic local assemble factor — shared by mesh + update. */
+function assembleEase(assemble: number, delay: number) {
+  const span = Math.max(0.001, 1 - delay);
+  const local = Math.max(0, Math.min(1, (assemble - delay) / span));
+  return 1 - Math.pow(1 - local, 3);
+}
+
 class Particle {
   x: number;
   y: number;
@@ -66,7 +73,9 @@ class Particle {
     ambientJitter: number,
     birthJitter: number,
     rng: () => number,
-    scatter: { x: number; y: number; delay: number } | null
+    scatter: { x: number; y: number; delay: number } | null,
+    /** When remeshing mid-assemble, start at lerp(scatter, origin) instead of scatter */
+    placeAtAssemble: number | null
   ) {
     this.originX = x;
     this.originY = y;
@@ -75,8 +84,14 @@ class Particle {
     this.assembleDelay = scatter?.delay ?? 0;
 
     if (scatter) {
-      this.x = scatter.x;
-      this.y = scatter.y;
+      if (placeAtAssemble != null) {
+        const t = assembleEase(placeAtAssemble, this.assembleDelay);
+        this.x = this.scatterX + (this.originX - this.scatterX) * t;
+        this.y = this.scatterY + (this.originY - this.scatterY) * t;
+      } else {
+        this.x = scatter.x;
+        this.y = scatter.y;
+      }
       this.vx = 0;
       this.vy = 0;
     } else {
@@ -102,10 +117,7 @@ class Particle {
     assemble: number,
     cursorEnabled: boolean
   ) {
-    const span = Math.max(0.001, 1 - this.assembleDelay);
-    const local = Math.max(0, Math.min(1, (assemble - this.assembleDelay) / span));
-    // Ease-out cubic: slow approach into the silhouette
-    const t = 1 - Math.pow(1 - local, 3);
+    const t = assembleEase(assemble, this.assembleDelay);
     const targetX = this.scatterX + (this.originX - this.scatterX) * t;
     const targetY = this.scatterY + (this.originY - this.scatterY) * t;
 
@@ -210,12 +222,15 @@ export function CursorDrivenParticleIndiaMap({
     let mouseY = -1000;
     let containerWidth = 0;
     let containerHeight = 0;
+    let hasMeshed = false;
     let rng = createRng(seed);
     let assembleTarget = assembleOnScroll ? 0 : 1;
     let assemble = assembleTarget;
     let reducedMotion = false;
+    let resizeDebounceId = 0;
     /** Per-frame blend toward scroll target — lower = slower, smoother gather */
     const ASSEMBLE_SMOOTH = 0.016;
+    const RESIZE_DEBOUNCE_MS = 120;
 
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
     const syncReduced = () => {
@@ -243,13 +258,30 @@ export function CursorDrivenParticleIndiaMap({
       assembleTarget = measureAssembleProgress(sectionEl);
     };
 
-    const init = () => {
+    /**
+     * @param force — remesh even if size unchanged (theme / reduced-motion)
+     */
+    const init = (force = false, reason = "init") => {
       const container = containerRef.current;
       if (!container) return;
 
+      const nextW = container.clientWidth;
+      const nextH = container.clientHeight;
+      if (nextW < 1 || nextH < 1) return;
+
+      const sizeUnchanged =
+        Math.abs(nextW - containerWidth) < 1 && Math.abs(nextH - containerHeight) < 1;
+
+      if (!force && hasMeshed && sizeUnchanged) {
+        return;
+      }
+
+      // Remesh mid-flight: keep visual continuity at current assemble
+      const preserveAssemble = hasMeshed && assembleOnScroll && !reducedMotion;
+
       rng = createRng(seed);
-      containerWidth = container.clientWidth;
-      containerHeight = container.clientHeight;
+      containerWidth = nextW;
+      containerHeight = nextH;
 
       const dpr = window.devicePixelRatio || 1;
       canvas.width = Math.max(1, Math.floor(containerWidth * dpr));
@@ -295,6 +327,7 @@ export function CursorDrivenParticleIndiaMap({
       const cx = containerWidth / 2;
       const cy = containerHeight / 2;
       const scatterRadius = Math.hypot(containerWidth, containerHeight) * 0.55;
+      const placeAt = preserveAssemble ? assemble : null;
 
       for (let y = 0; y < mapPixels.height; y += step) {
         for (let x = 0; x < mapPixels.width; x += step) {
@@ -308,7 +341,6 @@ export function CursorDrivenParticleIndiaMap({
             if (assembleOnScroll && !reducedMotion) {
               const angle = rng() * Math.PI * 2;
               const dist = scatterRadius * (0.35 + rng() * 0.65);
-              // Soft cloud bias: mix radial burst with canvas-wide noise
               const noiseX = rng() * containerWidth;
               const noiseY = rng() * containerHeight;
               scatter = {
@@ -331,7 +363,8 @@ export function CursorDrivenParticleIndiaMap({
                 ambientJitter,
                 birthJitter,
                 rng,
-                scatter
+                scatter,
+                placeAt
               )
             );
           }
@@ -341,6 +374,14 @@ export function CursorDrivenParticleIndiaMap({
       ctx.clearRect(0, 0, containerWidth, containerHeight);
       updateAssembleTarget();
       if (!assembleOnScroll || reducedMotion) assemble = assembleTarget;
+      hasMeshed = true;
+    };
+
+    const scheduleResizeInit = () => {
+      window.clearTimeout(resizeDebounceId);
+      resizeDebounceId = window.setTimeout(() => {
+        init(false);
+      }, RESIZE_DEBOUNCE_MS);
     };
 
     const animate = () => {
@@ -383,18 +424,18 @@ export function CursorDrivenParticleIndiaMap({
     const onScrollOrResize = () => updateAssembleTarget();
     const onReducedChange = () => {
       syncReduced();
-      init();
+      init(true);
     };
 
     const timeoutId = setTimeout(() => {
-      init();
+      init(true);
       animate();
     }, 100);
 
-    const resizeObserver = new ResizeObserver(() => init());
+    const resizeObserver = new ResizeObserver(() => scheduleResizeInit());
     if (containerRef.current) resizeObserver.observe(containerRef.current);
 
-    const themeObserver = new MutationObserver(() => init());
+    const themeObserver = new MutationObserver(() => init(true));
     themeObserver.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["class"],
@@ -412,6 +453,7 @@ export function CursorDrivenParticleIndiaMap({
 
     return () => {
       clearTimeout(timeoutId);
+      window.clearTimeout(resizeDebounceId);
       resizeObserver.disconnect();
       themeObserver.disconnect();
       window.removeEventListener("scroll", onScrollOrResize);
