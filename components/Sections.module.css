@@ -33,14 +33,6 @@
   gap: 48px;
 }
 
-.eyebrowInk {
-  color: var(--accent-on-ink);
-}
-
-.eyebrowPaper {
-  color: var(--accent-on-paper);
-}
-
 .heading {
   max-width: var(--measure-heading);
 }
@@ -166,12 +158,6 @@
     rgba(11, 12, 16, 0.93) 56%,
     rgba(11, 12, 16, 0) 88%
   );
-}
-
-.approachStage .eyebrowInk {
-  max-width: var(--measure-thesis);
-  margin: 0 auto;
-  width: 100%;
 }
 
 @media (max-width: 880px) {

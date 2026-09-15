@@ -20,8 +20,6 @@ export function Approach() {
   return (
     <section id="act-01" className={s.approach} aria-labelledby="approach-heading">
       <div className={s.approachStage}>
-        <div className={`mono ${s.eyebrowInk}`}>01 / Approach</div>
-
         <h2 id="approach-heading" className={`h2lg ${s.thesis}`}>
           {approach.thesis}
         </h2>

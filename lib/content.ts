@@ -105,7 +105,6 @@ export type InstrumentKey = "squyd" | "kraken" | "genesis" | "morula";
  * Heading and body are the client's brief, drafted and awaiting confirmation.
  */
 export const instruments = {
-  eyebrow: "04 / Instruments",
   heading: "Democratising the 3D bioprinter." as string | null,
   headingPlaceholder: "Heading placeholder — democratising bioprinting",
   /* The heading names the aim; the body states the barrier it removes. */

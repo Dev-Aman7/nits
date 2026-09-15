@@ -21,7 +21,6 @@ export function Partners() {
     >
       <div className={s.blocks}>
         <div className={s.headingGroup}>
-          <div className={`mono ${s.eyebrowPaper}`}>06 / Partners</div>
           <Reveal as="h2" id="partners-heading" name="nits-in" className={`h2 ${s.heading}`}>
             {partners.heading}
           </Reveal>

@@ -23,7 +23,6 @@ export function Scale() {
       <div className={s.scaleSplit}>
         <div className={s.scaleRailCol}>
           <div className={s.scaleRail}>
-            <div className={`mono ${s.eyebrowInk}`}>02 / Scale</div>
             {scale.heading ? (
               <h2 id="scale-heading" className="h2">
                 {scale.heading}
