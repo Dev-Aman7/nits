@@ -629,6 +629,16 @@
   color: var(--text-ink-3);
 }
 
+.footerLink {
+  color: var(--accent-on-ink);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.footerLink:hover {
+  opacity: 0.68;
+}
+
 /* ==========================================================================
    Genesis illustration layer
 

@@ -26,12 +26,14 @@ export const site = {
   copyrightYear: 2026,
 } as const;
 
+/** Absolute paths so section links work from /careers as well as home. */
 export const navLinks = [
-  { label: "Approach", href: "#act-01" },
-  { label: "Scale", href: "#act-02" },
-  { label: "Instruments", href: "#act-04" },
-  { label: "About", href: "#act-05" },
-  { label: "Partners", href: "#act-06" },
+  { label: "Approach", href: "/#act-01" },
+  { label: "Scale", href: "/#act-02" },
+  { label: "Instruments", href: "/#act-04" },
+  { label: "About", href: "/#act-05" },
+  { label: "Partners", href: "/#act-06" },
+  { label: "Careers", href: "/careers" },
 ] as const;
 
 /** Sections whose ground is ink — the navbar inverts while any of these owns the scroll line. */
