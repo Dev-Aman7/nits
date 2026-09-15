@@ -1,6 +1,8 @@
 import { about } from "@/lib/content";
 import { Reveal } from "../Reveal";
 import s from "../Sections.module.css";
+import { CursorDrivenParticleIndiaMap } from "../ui/cursor-driven-particle-india-map";
+import { HoverTransition } from "../ui/hover-transition";
 
 /**
  * 05 — About. Trust.
@@ -13,6 +15,15 @@ import s from "../Sections.module.css";
 export function About() {
   return (
     <section id="act-05" className={`${s.section} ${s.sectionPaper}`} aria-labelledby="about-heading">
+      {/* <CursorDrivenParticleIndiaMap
+        className="mb-8 min-h-[320px] text-[var(--text-paper-1)] md:min-h-[420px]"
+        particleDensity={3}
+        particleSize={1}
+        dispersionStrength={1}
+        returnSpeed={0.08}
+        interactionRadius={130}
+        seed={42}
+      /> */}
       <div className={s.blocks}>
         <div className={s.headingGroup}>
           <div className={`mono ${s.eyebrowPaper}`}>05 / About</div>
