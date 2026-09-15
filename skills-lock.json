@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "skills": {
+    "hyperframes": {
+      "source": "heygen-com/hyperframes",
+      "sourceType": "github",
+      "skillPath": "skills/hyperframes/SKILL.md",
+      "computedHash": "30cea07e881cd0e671bc0af01a4ca4bad23243847a4fc8a699d58242d0f05710"
+    },
+    "hyperframes-animation": {
+      "source": "heygen-com/hyperframes",
+      "sourceType": "github",
+      "skillPath": "skills/hyperframes-animation/SKILL.md",
+      "computedHash": "4dd03f4780065fc90dd73760cc686c264ef6bf2b82b1e7ebe6d49e55d92fcac1"
+    },
+    "motion-graphics": {
+      "source": "heygen-com/hyperframes",
+      "sourceType": "github",
+      "skillPath": "skills/motion-graphics/SKILL.md",
+      "computedHash": "62b6e2d32dd922e31afd9b9d7851dfab5a70186bdeb3c7cdb0fb0a974dc3423c"
+    },
+    "threejs-animation": {
+      "source": "cloudai-x/threejs-skills",
+      "sourceType": "github",
+      "skillPath": "skills/threejs-animation/SKILL.md",
+      "computedHash": "8c50b1493812bd88f3ed0637c0c3c5d846afdb322157b67b2ffba4ce8e552835"
+    },
+    "threejs-shaders": {
+      "source": "cloudai-x/threejs-skills",
+      "sourceType": "github",
+      "skillPath": "skills/threejs-shaders/SKILL.md",
+      "computedHash": "649ceb058edfb5cfd51e80fb3a6c57aca9bab4a9d3a03f6077aa9502be0c0771"
+    }
+  }
+}
