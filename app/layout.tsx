@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, IBM_Plex_Mono } from "next/font/google";
+import { SmoothScroll } from "@/components/SmoothScroll";
 import { site } from "@/lib/content";
 import "./globals.css";
 
@@ -83,7 +84,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <style dangerouslySetInnerHTML={{ __html: NO_JS_FALLBACK }} />
         </noscript>
       </head>
-      <body>{children}</body>
+      <body>
+        <SmoothScroll>{children}</SmoothScroll>
+      </body>
     </html>
   );
 }
