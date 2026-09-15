@@ -33,6 +33,8 @@ export interface CursorDrivenParticleIndiaMapProps {
    * closest section scrolls into view.
    */
   assembleOnScroll?: boolean;
+  /** Multiplier for how far particles scatter from the map (default 1) */
+  scatterScale?: number;
 }
 
 /** Ease-out cubic local assemble factor — shared by mesh + update. */
@@ -206,6 +208,7 @@ export function CursorDrivenParticleIndiaMap({
   color,
   sampleAlpha = 1,
   assembleOnScroll = false,
+  scatterScale = 1,
 }: CursorDrivenParticleIndiaMapProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -228,8 +231,8 @@ export function CursorDrivenParticleIndiaMap({
     let assemble = assembleTarget;
     let reducedMotion = false;
     let resizeDebounceId = 0;
-    /** Per-frame blend toward scroll target — lower = slower, smoother gather */
-    const ASSEMBLE_SMOOTH = 0.016;
+    /** Per-frame blend toward scroll target — bidirectional gather / disperse */
+    const ASSEMBLE_SMOOTH = 0.022;
     const RESIZE_DEBOUNCE_MS = 120;
 
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -326,8 +329,14 @@ export function CursorDrivenParticleIndiaMap({
       const birthJitter = 10;
       const cx = containerWidth / 2;
       const cy = containerHeight / 2;
-      const scatterRadius = Math.hypot(containerWidth, containerHeight) * 0.55;
+      const scaleFactor = Math.max(0.5, scatterScale);
+      const scatterRadius =
+        Math.hypot(containerWidth, containerHeight) * 0.95 * scaleFactor;
+      const bleed = Math.min(containerWidth, containerHeight) * 0.05;
       const placeAt = preserveAssemble ? assemble : null;
+
+      const clampScatter = (v: number, max: number) =>
+        Math.max(-bleed, Math.min(max + bleed, v));
 
       for (let y = 0; y < mapPixels.height; y += step) {
         for (let x = 0; x < mapPixels.width; x += step) {
@@ -340,12 +349,11 @@ export function CursorDrivenParticleIndiaMap({
             let scatter: { x: number; y: number; delay: number } | null = null;
             if (assembleOnScroll && !reducedMotion) {
               const angle = rng() * Math.PI * 2;
-              const dist = scatterRadius * (0.35 + rng() * 0.65);
-              const noiseX = rng() * containerWidth;
-              const noiseY = rng() * containerHeight;
+              // Wide ring near edges — strong separation before gather
+              const dist = scatterRadius * (0.55 + rng() * 0.5);
               scatter = {
-                x: cx + Math.cos(angle) * dist * 0.55 + noiseX * 0.45 - cx * 0.45,
-                y: cy + Math.sin(angle) * dist * 0.55 + noiseY * 0.45 - cy * 0.45,
+                x: clampScatter(cx + Math.cos(angle) * dist, containerWidth),
+                y: clampScatter(cy + Math.sin(angle) * dist, containerHeight),
                 delay: rng() * 0.32,
               };
             }
@@ -479,6 +487,7 @@ export function CursorDrivenParticleIndiaMap({
     color,
     sampleAlpha,
     assembleOnScroll,
+    scatterScale,
   ]);
 
   return (

@@ -39,6 +39,8 @@ export function About() {
           <CursorDrivenParticleIndiaMap
             className={s.aboutMap}
             assembleOnScroll
+            mapPadding={0.02}
+            scatterScale={1.35}
             particleDensity={3}
             particleSize={1}
             dispersionStrength={1}
