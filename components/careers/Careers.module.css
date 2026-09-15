@@ -1,0 +1,405 @@
+/* Careers — editorial paper page. Hairlines, no boxed panels. */
+
+.page {
+  background: var(--paper);
+  color: var(--text-paper-1);
+}
+
+/* ---- Hero (home Overview rhythm) ---------------------------------------- */
+
+.hero {
+  position: relative;
+  min-height: min(72vh, 720px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 64px;
+  padding: calc(80px + clamp(32px, 5vh, 56px)) var(--space-container)
+    clamp(48px, 6vh, 80px);
+}
+
+.heroRail {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.eyebrow {
+  color: var(--accent-on-paper);
+}
+
+.heroCount {
+  color: var(--text-paper-3);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.heroCountNum {
+  color: var(--text-paper-1);
+}
+
+.heroBlock {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: clamp(32px, 5vw, 80px);
+}
+
+.heroCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  flex: 1 1 360px;
+  max-width: var(--measure-heading);
+}
+
+.heading {
+  margin: 0;
+  letter-spacing: -0.035em;
+  max-width: 14ch;
+}
+
+.lede {
+  margin: 0;
+  max-width: 42ch;
+  color: var(--text-paper-2);
+}
+
+.heroCue {
+  flex: none;
+  color: var(--accent-on-paper);
+  padding-bottom: 6px;
+}
+
+.heroRule {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--border-paper);
+}
+
+/* ---- Openings: left list + right brief ---------------------------------- */
+
+.openings {
+  border-bottom: 1px solid var(--border-paper);
+  min-height: 70vh;
+}
+
+.split {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  min-height: 70vh;
+}
+
+.listPane {
+  flex: 1 1 300px;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border-paper);
+  background: var(--paper);
+  min-width: 0;
+}
+
+.listHead {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 28px var(--space-container) 20px;
+  border-bottom: 1px solid var(--border-paper);
+  position: sticky;
+  top: 72px;
+  z-index: 1;
+  background: var(--paper);
+}
+
+.listLabel {
+  color: var(--accent-on-paper);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.listCount {
+  color: var(--text-paper-3);
+}
+
+.search {
+  display: block;
+  width: 100%;
+}
+
+.searchInput {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 12px 0;
+  border: none;
+  border-bottom: 1px solid var(--border-paper-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-paper-1);
+  font: inherit;
+  font-size: var(--body);
+  outline: none;
+  transition: border-color var(--dur-hover) var(--ease-default);
+}
+
+.searchInput::placeholder {
+  color: var(--text-paper-3);
+}
+
+.searchInput:focus {
+  border-bottom-color: var(--accent-on-paper);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+}
+
+.listItem {
+  border-bottom: 1px solid var(--border-paper);
+}
+
+.listButton {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  margin: 0;
+  padding: 20px var(--space-container);
+  border: none;
+  border-left: 3px solid transparent;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--dur-hover) var(--ease-default),
+    border-color var(--dur-hover) var(--ease-default);
+}
+
+.listButton:hover {
+  background: color-mix(in oklab, var(--paper) 90%, var(--ink));
+}
+
+.listButton[aria-selected="true"] {
+  border-left-color: var(--accent-on-paper);
+  background: var(--white);
+}
+
+.listButton:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
+}
+
+.listTitle {
+  font-size: clamp(17px, 1.8vw, 20px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--text-paper-1);
+}
+
+.listMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  color: var(--text-paper-3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.listTeam {
+  color: var(--accent-on-paper);
+}
+
+.noResults {
+  margin: 0;
+  padding: 28px var(--space-container);
+  color: var(--text-paper-3);
+}
+
+.detailPane {
+  flex: 2 1 420px;
+  min-width: 0;
+  background: var(--white);
+}
+
+/* ---- Detail brief ------------------------------------------------------- */
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  padding: clamp(32px, 4vw, 56px) clamp(24px, 4vw, 48px)
+    clamp(56px, 8vw, 96px);
+  min-height: 100%;
+}
+
+.detailHead {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 640px;
+}
+
+.detailMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  color: var(--text-paper-3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.detailMetaAccent {
+  color: var(--accent-on-paper);
+}
+
+.detailTitle {
+  margin: 0;
+  font-size: clamp(26px, 3.2vw, 40px);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+}
+
+.detailSummary {
+  margin: 0;
+  max-width: 48ch;
+  font-size: var(--body-lg);
+  line-height: 1.45;
+  color: var(--text-paper-2);
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 40px 32px;
+  max-width: 900px;
+}
+
+.detailBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.detailBlockWide {
+  grid-column: 1 / -1;
+  max-width: 600px;
+}
+
+.detailBlockLabel {
+  color: var(--accent-on-paper);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-paper);
+}
+
+.detailBody {
+  margin: 0;
+  font-size: var(--body);
+  line-height: 1.55;
+  color: var(--text-paper-2);
+}
+
+.detailList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.detailList li {
+  position: relative;
+  padding: 12px 0 12px 16px;
+  border-bottom: 1px solid var(--border-paper);
+  font-size: var(--body);
+  line-height: 1.5;
+  color: var(--text-paper-2);
+}
+
+.detailList li:last-child {
+  border-bottom: none;
+}
+
+.detailList li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.3em;
+  width: 6px;
+  height: 1px;
+  background: var(--accent-on-paper);
+}
+
+.detailActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 28px;
+  padding-top: 8px;
+  max-width: 640px;
+}
+
+.detailApplyNote {
+  color: var(--text-paper-3);
+  max-width: 28ch;
+}
+
+.empty {
+  padding: var(--space-section) var(--space-container);
+  color: var(--text-paper-3);
+}
+
+/* Visually hidden — search label for AT. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    min-height: 0;
+    gap: 48px;
+  }
+
+  .heading {
+    max-width: none;
+  }
+
+  .listPane {
+    max-width: none;
+    border-right: none;
+    border-bottom: 1px solid var(--border-paper);
+  }
+
+  .listHead {
+    position: static;
+  }
+
+  .split {
+    min-height: 0;
+  }
+
+  .detail {
+    padding: 32px var(--space-container) 72px;
+  }
+}
