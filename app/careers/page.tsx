@@ -37,7 +37,7 @@ export default function CareersPage() {
         {jobs.length > 0 ? (
           <CareersOpenings />
         ) : (
-          <p className={`mono ${s.openings}`}>{careers.emptyLabel}</p>
+          <p className={`mono ${s.empty}`}>{careers.emptyLabel}</p>
         )}
         <Contact />
       </main>

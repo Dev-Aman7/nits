@@ -32,6 +32,8 @@ export const careers = {
     "NITS Engineering designs and builds bioprinting instruments with the people who use them — in labs, hospitals and industry R&D. We hire for craft, curiosity and the patience to get a living system to work.",
   openingsLabel: "Open roles",
   emptyLabel: "No openings right now",
+  searchPlaceholder: "Search roles, team, or location",
+  noResultsLabel: "No roles match that search.",
   applyLabel: "Apply via Google Form",
   applyNote: "Opens in a new tab. We review every application.",
   sections: {
