@@ -113,40 +113,82 @@
    01 — Approach
    ========================================================================== */
 
+/* The section runs several viewports so the six beats of the print sequence
+   have somewhere to happen. The parallax dot field is gone — the sequence is
+   the texture now, and two moving backgrounds fight each other. */
 .approach {
+  position: relative;
+  /* The first viewport is consumed by the entry, during which the cells arrive
+     while the hero is still on screen; the rest is the compaction. Trimmed
+     from three — the extra screen was spheroids already formed and not moving,
+     which is scroll with nothing in it. */
+  min-height: 240vh;
+  min-height: 240svh;
   background: var(--ink);
   color: var(--text-ink-1);
-  overflow: hidden;
 }
 
-.dotField {
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(rgba(244, 243, 240, 0.1) 1px, transparent 1px);
-  background-size: 48px 48px;
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-.approachInner {
-  position: relative;
+/* Holds at the top of the viewport while the sequence plays behind it. */
+.approachStage {
+  position: sticky;
+  top: 0;
+  /* above GenesisField's fixed canvas, which sits at 1 */
+  z-index: 2;
+  height: 100vh;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 48px;
+  padding: 0 var(--space-container);
+  /* The thesis holds at full opacity for the whole section — it does not
+     stand down for the spheroids. Its own pool of ink (below) is what keeps
+     it readable rather than the field being faded out from under it. */
+  opacity: 1;
 }
 
 .thesis {
+  position: relative;
   margin: 0 auto;
   max-width: var(--measure-thesis);
 }
 
-.approachColumns {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 64px;
-  max-width: var(--measure-thesis);
-  margin: 48px auto 0;
+/* A pool of ink under the claim, so the field never crosses the type. */
+.thesis::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -56px -72px;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(11, 12, 16, 0.96) 0%,
+    rgba(11, 12, 16, 0.93) 56%,
+    rgba(11, 12, 16, 0) 88%
+  );
 }
 
-.approachColumns p {
-  color: var(--text-ink-2);
+.approachStage .eyebrowInk {
+  max-width: var(--measure-thesis);
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media (max-width: 880px) {
+  .approach {
+    min-height: 220svh;
+  }
+
+  .thesis::before {
+    inset: -40px calc(-1 * var(--space-container));
+    background: rgba(11, 12, 16, 0.9);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .approachStage {
+    transition: none;
+  }
 }
 
 /* ==========================================================================
@@ -157,7 +199,6 @@
   position: relative;
   background: var(--ink);
   color: var(--text-ink-1);
-  border-top: 1px solid var(--border-ink);
 }
 
 .scaleSplit {
@@ -179,7 +220,6 @@
   justify-content: center;
   gap: 40px;
   padding: 80px var(--space-container);
-  border-right: 1px solid var(--border-ink);
 }
 
 .scaleReadout {
@@ -227,7 +267,6 @@
   justify-content: center;
   gap: 24px;
   padding: 80px var(--space-step);
-  border-bottom: 1px solid var(--border-ink);
 }
 
 .scaleStepLabel {
@@ -251,8 +290,6 @@
     min-height: 0;
     gap: 32px;
     padding: var(--space-section) var(--space-container) 64px;
-    border-right: 0;
-    border-bottom: 1px solid var(--border-ink);
   }
 
   .scaleStep {
@@ -446,22 +483,86 @@
    05 — Partners
    ========================================================================== */
 
-.partnerCard {
-  color: var(--text-paper-1);
+/* Three groups, each a mono label over a ruled list of institutions. The name
+   carries in the display face; the location is mono and right-aligned, which
+   is the only right-alignment this design permits (rule 15). */
+
+.partnerGroups {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
 }
 
-.partnerEyebrow {
+.partnerGroup {
+  display: grid;
+  grid-template-columns: minmax(0, 200px) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 64px);
+  align-items: start;
+}
+
+.partnerGroupHead {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding-top: 18px;
+}
+
+.partnerGroupLabel {
   color: var(--accent-on-paper);
 }
 
-.partnerBody {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.partnerGroupCount {
+  color: var(--text-paper-3);
 }
 
-.partnerCopy {
-  color: var(--text-paper-2);
+.partnerList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--border-paper-strong);
+}
+
+.partnerRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border-paper);
+}
+
+.partnerName {
+  font-size: clamp(19px, 2vw, 25px);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--text-paper-1);
+}
+
+.partnerPlace {
+  flex: none;
+  text-align: right;
+  color: var(--text-paper-3);
+}
+
+@media (max-width: 820px) {
+  .partnerGroup {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .partnerGroupHead {
+    padding-top: 0;
+  }
+
+  .partnerRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .partnerPlace {
+    text-align: left;
+  }
 }
 
 /* ==========================================================================
@@ -586,7 +687,8 @@
 
 .scaleSplit {
   position: relative;
-  z-index: 1;
+  /* above GenesisField's fixed canvas, which sits at 1 */
+  z-index: 2;
 }
 
 /* The rail is a defined column with a hairline edge — it takes solid ink
@@ -604,18 +706,22 @@
   z-index: 1;
 }
 
-.scaleStep::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    rgba(11, 12, 16, 0.94) 0%,
-    rgba(11, 12, 16, 0.88) 42%,
-    rgba(11, 12, 16, 0) 100%
-  );
+/* Steps alternate sides and the field slides to the opposite one, so the two
+   never compete for the same half of the frame. The copy itself stays
+   left-aligned inside its measure — only the block moves. Right-aligning the
+   type would break rule 15, and long statements read worse ragged-left. */
+.scaleStep:nth-of-type(even) > * {
+  width: 100%;
+  max-width: var(--measure-prose-wide);
+  margin-left: auto;
+}
+
+@media (max-width: 880px) {
+  /* stacked: no room to alternate, so every step returns to the left */
+  .scaleStep:nth-of-type(even) > * {
+    max-width: none;
+    margin-left: 0;
+  }
 }
 
 /* The lede column and the mono rail sit over the drawing too — each gets its
@@ -649,11 +755,6 @@
 }
 
 @media (max-width: 880px) {
-  /* stacked: the field is behind everything, so the scrim covers the width */
-  .scaleStep::before {
-    background: rgba(11, 12, 16, 0.88);
-  }
-
   .heroBlock::before {
     right: calc(-1 * var(--space-container));
     background: rgba(244, 243, 240, 0.9);
@@ -673,4 +774,394 @@
    no-WebGL fallback. */
 .figure[data-gl="on"] .figurePlaceholder {
   display: none;
+}
+
+/* An unwritten heading is labelled, not invented — design rule 22. The mono
+   label style says "this is metadata about the page, not the page". */
+.headingPlaceholder {
+  color: var(--text-ink-4);
+  font-weight: 500;
+  max-width: var(--measure-heading);
+}
+
+/* ==========================================================================
+   03/04 — Instruments (Access folded in)
+
+   Access's claim and Instruments' apparatus, merged into one beat: the same
+   rail-and-steps construction as Scale. The heading and body hold sticky in
+   a left rail; the four instruments arrive one at a time in the scrolling
+   column beside it, each in its own hairline card, each triggered by its own
+   scroll position rather than all animating in as one wave.
+   ========================================================================== */
+
+.instrumentsSplit {
+  display: flex;
+  flex-wrap: wrap;
+  /* The cell field is a viewport-fixed canvas at z-index 1, which paints above
+     every section ground. Copy has to be lifted over it, exactly as in
+     Approach and Scale. */
+  position: relative;
+  z-index: 2;
+}
+
+.instrumentsRailCol {
+  flex: 1 1 340px;
+  max-width: 420px;
+  /* Visually on the right — order, not DOM order, so it still reads (and is
+     announced) before the cards that follow it in the markup. */
+  order: 2;
+}
+
+.instrumentsRail {
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 32px;
+  padding: 80px var(--space-container);
+}
+
+.instrumentsRailBody {
+  color: var(--text-ink-2);
+  max-width: var(--measure-prose);
+}
+
+.instrumentsCards {
+  flex: 3 1 520px;
+  min-width: 0;
+  /* Visually on the left, ahead of the rail — see .instrumentsRailCol. */
+  order: 1;
+}
+
+/* Each card gets a tall step of its own — same device Scale uses so a card
+   dwells on screen long enough to be read before the next one arrives,
+   rather than the set animating in together as a stagger-wave.
+
+   Matched to the rail's own 100vh: at 66vh the step was shorter than the
+   viewport, so a card centered within it landed above where the rail's
+   centered content sits — the two never lined up. At 100vh, when a step
+   fills the screen its centered card is exactly viewport-centered too. */
+.instrumentCardStep {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  /* The card caps at 480px but this column runs much wider — push it to the
+     left edge of the space, away from the rail now sitting on the right. */
+  justify-content: flex-start;
+  padding: 40px var(--space-step);
+}
+
+/* -- The card as a drawn box ----------------------------------------------
+
+   Axonometric, not perspective: parallel edges stay parallel, which is the
+   convention the hero's general-arrangement drawing uses. The extrusion is a
+   constant vector, so every connecting edge has the same length and the same
+   angle regardless of how tall the card is — the whole construction is static
+   CSS with nothing to measure and no 3D transform, so the type never blurs.
+
+   Hidden-line removal is free: the front face is opaque and paints above the
+   extrusion layer, so the two edges that should be behind the card are.      */
+
+.instrumentCardBox {
+  position: relative;
+  width: 100%;
+  /* The box has to leave room for its own extrusion, or the back face runs
+     off the right edge and the card reads as a clipped rectangle rather than
+     a drawn solid. */
+  max-width: min(480px, calc(100% - var(--ex)));
+
+  --ex: 20px;
+  --ey: -12px;
+  --edge-len: 23.4px;    /* hypot(20, 12) */
+  --edge-ang: -30.96deg; /* atan2(-12, 20) */
+}
+
+.cardExtrude {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.cardBack {
+  position: absolute;
+  inset: 0;
+  transform: translate(var(--ex), var(--ey));
+  border: 1px solid var(--border-ink-strong);
+}
+
+.cardEdge {
+  position: absolute;
+  width: var(--edge-len);
+  height: 1px;
+  background: var(--border-ink-strong);
+  transform-origin: 0 50%;
+  transform: rotate(var(--edge-ang));
+}
+
+.cardEdgeTL { left: 0; top: 0; }
+.cardEdgeTR { left: 100%; top: 0; }
+.cardEdgeBR { left: 100%; top: 100%; }
+.cardEdgeBL { left: 0; top: 100%; }
+
+.instrumentCard {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 40px 36px 44px;
+  border: 1px solid var(--border-ink-strong);
+  background: var(--surface-ink-raised);
+  overflow: hidden;
+}
+
+.instrumentCardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* -- The exposure sweep ---------------------------------------------------
+
+   A light plane crosses the face and the content resolves behind it, which is
+   what a digital-light engine does to cure a layer — the entrance is the
+   machine's own operating principle rather than a borrowed transition.
+
+   `--sweep` rests at 100%, so a browser without @property or without scroll
+   timelines shows the card fully resolved rather than blank. The unresolved
+   state is dimmed, never hidden: content parked at zero opacity waiting on an
+   observer is an accessibility failure.                                      */
+
+@property --sweep {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 100%;
+}
+
+@property --sweep-op {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+.instrumentCard {
+  --sweep: 100%;
+  --sweep-op: 0;
+}
+
+/* Both the mask and the line are driven from these two inherited properties,
+   animated once on the card itself. They cannot be animated on the children:
+   `overflow: hidden` makes the card a scroll container, so a `view()` timeline
+   on anything inside it measures that child against the card — which never
+   moves — and the animation sits at its first frame forever. The card's own
+   timeline still resolves against the document. */
+
+.cardSweepLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--sweep);
+  height: 1px;
+  background: var(--accent-on-ink);
+  opacity: var(--sweep-op);
+  pointer-events: none;
+}
+
+.cardSweepLine::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 1px;
+  height: 52px;
+  background: linear-gradient(
+    to bottom,
+    rgba(75, 85, 238, 0.18),
+    rgba(75, 85, 238, 0)
+  );
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .instrumentCardBody {
+      -webkit-mask-image: linear-gradient(
+        to bottom,
+        #000 var(--sweep),
+        rgba(0, 0, 0, 0.18) calc(var(--sweep) + 44px)
+      );
+      mask-image: linear-gradient(
+        to bottom,
+        #000 var(--sweep),
+        rgba(0, 0, 0, 0.18) calc(var(--sweep) + 44px)
+      );
+    }
+
+    .instrumentCard {
+      animation: nits-expose linear both;
+      animation-timeline: view();
+      animation-range: entry 14% cover 42%;
+    }
+  }
+}
+
+@keyframes nits-expose {
+  0% { --sweep: 0%; --sweep-op: 0; }
+  12% { --sweep-op: 1; }
+  84% { --sweep-op: 1; }
+  100% { --sweep: 100%; --sweep-op: 0; }
+}
+
+.instrumentCardFigure {
+  display: flex;
+}
+
+.instrumentIndex {
+  color: var(--text-ink-3);
+}
+
+.instrumentName {
+  margin: 0;
+}
+
+.instrumentDescriptor {
+  color: var(--accent-on-ink);
+}
+
+.instrumentCapability {
+  color: var(--text-ink-2);
+  margin: 0;
+}
+
+.instrumentLogo {
+  width: min(220px, 100%);
+  height: auto;
+  display: block;
+  /* Applied to every instrument logo or none — mixing makes them read at
+     different weights across the set. */
+  mix-blend-mode: screen;
+}
+
+/* Below the flex bases the rail stacks above the cards, where sticky stops
+   earning its keep — released rather than left half-working, same as Scale. */
+/* A shallower extrusion where the card is nearly full width — 20px of offset
+   on a 340px card is a third of the gutter and reads as a mistake. */
+@media (max-width: 880px) {
+  .instrumentCardBox {
+    --ex: 12px;
+    --ey: -8px;
+    --edge-len: 14.4px;
+    --edge-ang: -33.69deg;
+  }
+}
+
+@media (max-width: 880px) {
+  .instrumentsRailCol {
+    max-width: none;
+    flex-basis: 100%;
+    /* Stacked, not side-by-side — restore reading order so the heading
+       renders above the cards instead of the desktop left/right swap. */
+    order: 1;
+  }
+
+  .instrumentsCards {
+    order: 2;
+  }
+
+  .instrumentsRail {
+    position: static;
+    min-height: 0;
+    gap: 24px;
+    padding: var(--space-section) var(--space-container) 48px;
+  }
+
+  .instrumentCardStep {
+    min-height: 0;
+    justify-content: center;
+    padding: 32px var(--space-container);
+  }
+}
+
+/* ==========================================================================
+   Unwritten copy
+
+   Labelled in mono rather than filled with invented words — design rule 22.
+   The mono label style says "this is metadata about the page, not the page".
+   ========================================================================== */
+
+.headingPlaceholderPaper {
+  color: var(--text-paper-3);
+  font-weight: 500;
+  max-width: var(--measure-heading);
+}
+
+.bodyPlaceholder {
+  color: var(--text-ink-4);
+  max-width: var(--measure-prose);
+}
+
+.bodyPlaceholderPaper {
+  color: var(--text-paper-3);
+  max-width: var(--measure-prose);
+}
+
+.aboutBody {
+  color: var(--text-paper-2);
+  max-width: var(--measure-prose);
+}
+
+/* ==========================================================================
+   05 — About: prose beside a hairline metadata column
+   ========================================================================== */
+
+.aboutGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 96px);
+  align-items: start;
+}
+
+.aboutFacts {
+  margin: 0;
+  border-top: 1px solid var(--border-paper-strong);
+}
+
+.aboutFactRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-paper);
+}
+
+.aboutFactKey {
+  color: var(--text-paper-3);
+}
+
+.aboutFactValue {
+  margin: 0;
+  flex: none;
+  text-align: right;
+  color: var(--text-paper-1);
+}
+
+@media (max-width: 820px) {
+  .aboutGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Below this the longest value ("Clinical · Academic · Industry") no longer
+   clears its key on one line, so key and value stack. */
+@media (max-width: 560px) {
+  .aboutFactRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .aboutFactValue {
+    text-align: left;
+  }
 }

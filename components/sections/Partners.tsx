@@ -3,51 +3,56 @@ import { Reveal } from "../Reveal";
 import s from "../Sections.module.css";
 
 /**
- * 05 — Partners. The second inversion, back to paper, on a #CFCCC4 hairline
- * grid — the same card construction as Evidence with the ramp swapped.
+ * 06 — Partners. The real institution list, typeset.
+ *
+ * Three groups, each a mono label against a ruled list: name in display type,
+ * location right-aligned in mono. A logo wall was the alternative, but the
+ * logos are not in the repo and a grid of empty slots reads as unfinished —
+ * and a name set in the page's own face reads as a credential, where a logo
+ * strip reads as decoration. When logos arrive they sit beside the names
+ * without changing the construction.
  */
 export function Partners() {
   return (
     <section
-      id="act-05"
+      id="act-06"
       className={`${s.section} ${s.sectionPaper}`}
       aria-labelledby="partners-heading"
     >
       <div className={s.blocks}>
         <div className={s.headingGroup}>
-          <div className={`mono ${s.eyebrowPaper}`}>05 / Partners</div>
-          <Reveal
-            as="h2"
-            id="partners-heading"
-            name="nits-in"
-            className={`h2 ${s.heading}`}
-          >
+          <div className={`mono ${s.eyebrowPaper}`}>06 / Partners</div>
+          <Reveal as="h2" id="partners-heading" name="nits-in" className={`h2 ${s.heading}`}>
             {partners.heading}
           </Reveal>
         </div>
 
-        <div
-          className="cardGrid"
-          style={
-            {
-              "--grid-line": "var(--border-paper-strong)",
-              "--grid-face": "var(--paper)",
-            } as React.CSSProperties
-          }
-        >
-          {partners.cards.map((card, i) => (
+        <div className={s.partnerGroups}>
+          {partners.groups.map((group, i) => (
             <Reveal
-              key={card.eyebrow}
+              key={group.label}
               name="nits-in-sm"
               range={STAGGER[i]}
               delay={STAGGER_DELAY[i]}
-              className={`card ${s.partnerCard}`}
+              className={s.partnerGroup}
             >
-              <div className={`mono ${s.partnerEyebrow}`}>{card.eyebrow}</div>
-              <div className={s.partnerBody}>
-                <div className="h4">{card.title}</div>
-                <div className={`bodySm ${s.partnerCopy}`}>{card.body}</div>
+              <div className={s.partnerGroupHead}>
+                <span className={`mono ${s.partnerGroupLabel}`}>{group.label}</span>
+                <span className={`mono ${s.partnerGroupCount}`}>
+                  {String(group.items.length).padStart(2, "0")}
+                </span>
               </div>
+
+              <ul className={s.partnerList}>
+                {group.items.map((item) => (
+                  <li key={item.name} className={s.partnerRow}>
+                    <span className={s.partnerName}>{item.name}</span>
+                    {item.place ? (
+                      <span className={`mono ${s.partnerPlace}`}>{item.place}</span>
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
             </Reveal>
           ))}
         </div>

@@ -3,7 +3,6 @@
 import { scale } from "@/lib/content";
 import { useScrollState } from "@/lib/useScrollState";
 import { Reveal } from "../Reveal";
-import { ScaleField } from "../genesis/ScaleField";
 import s from "../Sections.module.css";
 
 /**
@@ -11,24 +10,29 @@ import s from "../Sections.module.css";
  * `10⁻ⁿ m` depth readout whose exponent is bucketed from this section's own
  * scroll progress; the right column is three full-height steps.
  *
- * The cell field is drawn behind the steps, running the print sequence in
- * reverse — the finished construct resolving down to individual cells — so
- * the illustration descends alongside the copy and the readout.
+ * The field behind the steps ascends with them — the spheroid Approach ended
+ * on, then printed layers, then the vascularised construct. It is drawn by
+ * GenesisField, mounted once at the page level, so the spheroids carry across
+ * the section boundary without a handoff.
  */
 export function Scale() {
   const { depthExponent } = useScrollState();
 
   return (
     <section id="act-02" className={s.scale} aria-labelledby="scale-heading">
-      <ScaleField />
-
       <div className={s.scaleSplit}>
         <div className={s.scaleRailCol}>
           <div className={s.scaleRail}>
             <div className={`mono ${s.eyebrowInk}`}>02 / Scale</div>
-            <h2 id="scale-heading" className="h2">
-              {scale.heading}
-            </h2>
+            {scale.heading ? (
+              <h2 id="scale-heading" className="h2">
+                {scale.heading}
+              </h2>
+            ) : (
+              <h2 id="scale-heading" className={`mono ${s.headingPlaceholder}`}>
+                {scale.headingPlaceholder}
+              </h2>
+            )}
 
             <div className={s.scaleReadout}>
               <div className={`mono ${s.scaleReadoutLabel}`}>{scale.readoutLabel}</div>

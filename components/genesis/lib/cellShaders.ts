@@ -18,17 +18,52 @@
 export const CELL_RESOLUTION = 160;
 export const CELL_COUNT = CELL_RESOLUTION * CELL_RESOLUTION;
 
+/**
+ * Per-particle seed — deterministic, NOT Math.random().
+ *
+ * Approach and Scale render the same cloud at the moment one hands over to the
+ * other. With random seeds the two clouds are different arrangements of the
+ * same shape, so the handoff reads as a flicker no matter how the fades are
+ * tuned. Seeding from the index makes them pixel-identical, and the handoff
+ * becomes invisible.
+ */
+export function seedFor(i: number): number {
+  let x = Math.sin(i * 12.9898 + 78.233) * 43758.5453;
+  x -= Math.floor(x);
+  return x;
+}
+
+/**
+ * Shared clock. Both fields must agree on time or their ambient rotation
+ * drifts apart and the handoff jumps.
+ */
+export function sharedTime(reduced: boolean): number {
+  return reduced ? 0 : performance.now() / 1000;
+}
+
+/** Camera the two fields meet at — Approach ends here, Scale starts here. */
+export const HANDOFF = {
+  dist: 4.55,
+  ele: 0.42,
+  lookY: -0.06,
+  lateral: -1.12,
+} as const;
+
 export const CELL_VERTEX_SHADER = /* glsl */ `
 attribute float aIdx;
 attribute float aSeed;
 
-uniform float uBeat;        // 0..5, fractional
+uniform float uBeatA;       // morph source beat
+uniform float uBeatB;       // morph target beat
+uniform float uMix;         // 0..1 between them
+uniform float uDisperse;    // 1 = scattered far out, 0 = settled on the beat
 uniform float uTime;
 uniform float uSize;
 uniform float uPixelRatio;
 
 varying float vState;
 varying float vGel;
+varying float vEdge;
 
 const float RES = ${CELL_RESOLUTION}.0;
 const float YLO = -0.80;
@@ -63,7 +98,13 @@ vec3 projGyro(vec3 p, float f){
 
 vec3 inCyl(vec3 h, float ylo, float yhi){
   float a = h.x * TAU;
-  float r = RV * sqrt(h.y);
+  /* Uniform disk out to RV, plus a long thinning tail past it — the outer
+     half of the disk (by h.y, which already skews outward under sqrt)
+     drifts well beyond RV, so density fades out gradually over a wide
+     distance instead of stopping at a wall. Paired with the radial alpha
+     falloff below, this is what actually reads as flowing into the
+     background rather than being cut off. */
+  float r = RV * sqrt(h.y) + RV * 1.3 * pow(h.y, 2.2);
   return vec3(r*cos(a), mix(ylo, yhi, h.z), r*sin(a));
 }
 
@@ -113,10 +154,13 @@ vec3 drift(vec3 p, float t){
 }
 
 void main(){
-  float b0 = floor(uBeat);
-  float b1 = min(b0 + 1.0, 5.0);
-  float f  = uBeat - b0;
+  float b0 = uBeatA;
+  float b1 = uBeatB;
+  float f  = uMix;
   f = f*f*(3.0 - 2.0*f);
+
+  /* what the field is effectively showing, for colour and settling */
+  float beatEff = mix(uBeatA, uBeatB, f);
 
   /* stagger per particle so material arrives in waves, not all at once */
   float lead = aSeed * 0.34;
@@ -127,15 +171,32 @@ void main(){
 
   vState = hash11(aIdx*1.3);
 
-  float gel = smoothstep(0.9, 2.1, uBeat);
-  float above = smoothstep(-0.1, 0.5, p.y - mix(0.9, -0.8 + uBeat*0.42, step(0.5, uBeat)));
+  float gel = smoothstep(0.9, 2.1, beatEff);
+  float above = smoothstep(-0.1, 0.5, p.y - mix(0.9, -0.8 + beatEff*0.42, step(0.5, beatEff)));
   float fluid = clamp((1.0 - gel) + above*0.7, 0.0, 1.0);
   vGel = 1.0 - fluid;
 
   p += drift(p*1.4, uTime) * (0.016 * fluid + 0.0035);
 
+  /* Scatter: each particle is pushed out along its own axis by its own
+     distance, so they arrive at different times and from every direction
+     rather than as one shrinking ball. */
+  if(uDisperse > 0.0005){
+    vec3 dir = normalize(p + vec3(0.0011, 0.0007, 0.0013));
+    float reach = 1.1 + 4.2 * hash11(aIdx * 0.37 + 5.0);
+    float lag = 0.55 + 0.45 * hash11(aIdx * 0.91 + 17.0);
+    p += dir * uDisperse * lag * reach;
+  }
+
   /* a slow breath once the construct is alive */
-  p *= 1.0 + sin(uTime*0.55 + vState*TAU) * 0.004 * smoothstep(3.4, 4.6, uBeat);
+  p *= 1.0 + sin(uTime*0.55 + vState*TAU) * 0.004 * smoothstep(3.4, 4.6, beatEff);
+
+  /* Brightness fades with radial distance from the core, on top of the
+     tail thinning out in solve()/inCyl above — density and brightness
+     taper together, so the field flows into the background rather than
+     reading as an edge. */
+  float rad = length(p.xz);
+  vEdge = 1.0 - smoothstep(0.75, 2.3, rad);
 
   vec4 mv = modelViewMatrix * vec4(p, 1.0);
   float sz = uSize * (0.55 + 0.9*vState) * (1.0 + 0.55*vGel);
@@ -153,12 +214,13 @@ uniform float uAlpha;
 
 varying float vState;
 varying float vGel;
+varying float vEdge;
 
 void main(){
   float d = length(gl_PointCoord - 0.5);
   float a = smoothstep(0.5, 0.08, d);
   if(a < 0.01) discard;
   vec3 c = mix(uCell, uHot, vGel * (0.35 + 0.65*vState));
-  gl_FragColor = vec4(c, a * uAlpha * (0.34 + 0.66*vGel));
+  gl_FragColor = vec4(c, a * uAlpha * (0.34 + 0.66*vGel) * vEdge);
 }
 `;

@@ -29,13 +29,13 @@ export const site = {
 export const navLinks = [
   { label: "Approach", href: "#act-01" },
   { label: "Scale", href: "#act-02" },
-  { label: "Genesis 1.3", href: "#act-03" },
-  { label: "Products", href: "#act-04" },
-  { label: "Partners", href: "#act-05" },
+  { label: "Instruments", href: "#act-04" },
+  { label: "About", href: "#act-05" },
+  { label: "Partners", href: "#act-06" },
 ] as const;
 
 /** Sections whose ground is ink — the navbar inverts while any of these owns the scroll line. */
-export const darkSectionIds = ["act-01", "act-02", "act-03", "act-04"] as const;
+export const darkSectionIds = ["act-01", "act-02", "act-04"] as const;
 
 export const hero = {
   headline: "Thinking and building the impossible.",
@@ -50,22 +50,31 @@ export const hero = {
 
 export const approach = {
   thesis: "Living tissue is not something you wait for. It is something you can build.",
-  columns: [
-    "For a century, biology set the pace of medicine. Tissue had to be donated, cultured, or approximated — and every question a researcher could ask was shaped by what happened to be available.",
-    "We think that constraint is an engineering problem. If a cell can be positioned, held, fed and observed, then tissue becomes a thing you specify rather than a thing you find.",
-    "That belief is the whole company. The instruments are how we argue it — each one built to make a previously impossible experiment ordinary.",
-  ],
 } as const;
 
 export const scale = {
-  heading: "Down to the scale where medicine is decided.",
+  /**
+   * The section now ASCENDS — spheroid → printed layers → vascularised
+   * construct — picking up the object Approach ended on. The v3 heading
+   * ("Down to the scale where medicine is decided") described a descent and
+   * contradicts what the eye sees, so it is held as a labelled placeholder
+   * until the replacement arrives. Design rule 22.
+   */
+  heading: "From the cell up to the thing that has to work." as string | null,
+  headingPlaceholder: "Heading placeholder — section now ascends",
   readoutLabel: "Current depth",
+  /**
+   * Scale values are what is actually on screen, not the v3 values: a
+   * spheroid is ~100 µm (10⁻⁴ m), not 10⁻⁵. The three statements are the
+   * originals, reordered — they read as a build from the work to what it is
+   * for.
+   */
   steps: [
     {
-      label: "10⁻¹ m — the body",
+      label: "10⁻⁴ m — the cell",
       statement:
-        "Where the problem is stated: an organ that fails, a drug that has to be trusted, a wound that will not close.",
-      exponent: "−1",
+        "Where we work. Place a living cell deliberately, keep it alive, and the tissue above it becomes designable.",
+      exponent: "−4",
     },
     {
       label: "10⁻³ m — the tissue",
@@ -74,107 +83,136 @@ export const scale = {
       exponent: "−3",
     },
     {
-      label: "10⁻⁵ m — the cell",
+      label: "10⁻² m — the construct",
       statement:
-        "Where we work. Place a living cell deliberately, keep it alive, and the tissue above it becomes designable.",
-      exponent: "−5",
+        "Where the problem is stated: an organ that fails, a drug that has to be trusted, a wound that will not close.",
+      exponent: "−2",
     },
   ],
-} as const;
-
-export const evidence = {
-  logo: { src: "/assets/logo-genesis.png", alt: "Genesis 1.3" },
-  heading: "Digital Light 3D Bioprinter",
-  lede: "Light does the building. A projected image cures a whole layer of cell-laden resin at once, so a construct forms in the time an extrusion nozzle would still be tracing its first path — and the cells inside it stay alive.",
-  figure: {
-    tag: "Fig. 01 / Genesis 1.3",
-    status: "Built",
-    placeholder: "Image placeholder — Genesis 1.3, full bleed",
-    placeholderSub: "2400 × 1240 recommended",
-    /** Drop a real file in /public/assets and set this to swap the placeholder out. */
-    src: null as string | null,
-  },
-  specs: [
-    { eyebrow: "Projection", body: "A full layer is cured in one exposure — no nozzle, no shear on the cells." },
-    {
-      eyebrow: "Resolution",
-      body: "Geometry defined in software, down to the scale where tissue architecture begins.",
-    },
-    { eyebrow: "Environment", body: "Sterile, temperature-held chamber across the whole build." },
-    { eyebrow: "Verification", body: "Post-print imaging and a viability readout for every construct." },
-  ],
-  note: "Specification placeholders — send the real figures and I'll set them",
 } as const;
 
 export type ProductStatus = "built" | "tbc" | "soon";
 
-export const products = {
-  eyebrow: "04 / Programme",
-  heading: "Genesis is one instrument in a four-part programme.",
-  count: "Programme / four products",
-  note: "Two statuses are placeholders — confirm and I'll set them",
+export type InstrumentKey = "squyd" | "kraken" | "genesis" | "morula";
+
+/**
+ * 03/04 — Instruments. Access's argument (democratising the instrument) and
+ * Instruments' apparatus (the four machines) are one beat now, not two: the
+ * heading and body carry the claim, sticky in the rail, while the four
+ * instruments are its evidence, arriving one at a time in the scrolling
+ * column beside it — the same construction as Scale's rail-and-steps.
+ *
+ * Heading and body are the client's brief, drafted and awaiting confirmation.
+ */
+export const instruments = {
+  eyebrow: "04 / Instruments",
+  heading: "Democratising the 3D bioprinter." as string | null,
+  headingPlaceholder: "Heading placeholder — democratising bioprinting",
+  /* The heading names the aim; the body states the barrier it removes. */
+  body:
+    "The instrument should never be the reason the experiment does not happen. Bioprinting has stayed a specialist's tool for practical reasons, not scientific ones." as
+      | string
+      | null,
+  bodyPlaceholder: "Body placeholder — one paragraph, affordability implied",
   rows: [
     {
-      index: "P—01",
+      key: "squyd" as InstrumentKey,
+      index: "I—01",
       logo: "/assets/row-squyd.png",
       name: "SQUYD™",
       descriptor: "Where Engineering Creates Living System",
-      description: "The platform the programme is built on.",
-      status: "tbc" as ProductStatus,
-      statusLabel: "Status TBC",
+      capability: "Precisely depositing biological materials.",
     },
     {
-      index: "P—02",
+      key: "kraken" as InstrumentKey,
+      index: "I—02",
       logo: "/assets/row-kraken.png",
       name: "KRAKEN",
       descriptor: "The Worlds First High-Throughput System",
-      description: "3D bioprinting at the volume a real screening campaign consumes.",
-      status: "tbc" as ProductStatus,
-      statusLabel: "Status TBC",
+      capability: "Precisely and reproducibly fabricating tissues at scale.",
     },
     {
-      index: "P—03",
+      key: "genesis" as InstrumentKey,
+      index: "I—03",
       logo: "/assets/row-genesis.png",
       name: "GENESIS 1.3",
       descriptor: "Digital Light 3D Bioprinter",
-      description: "Let there be light. A full layer cured in one exposure.",
-      status: "built" as ProductStatus,
-      statusLabel: "Built",
+      capability:
+        "Precisely controlling light-based fabrication of soft tissue structures.",
     },
     {
-      index: "P—04",
+      key: "morula" as InstrumentKey,
+      index: "I—04",
       logo: "/assets/row-morula.png",
       name: "MORULA™",
       descriptor: "Engineered microtissues. Advancing human health.",
-      description: "Human physiologically relevant <em>in vitro</em> screening models.",
-      status: "soon" as ProductStatus,
-      statusLabel: "Coming soon",
+      capability:
+        "Precisely controlling tissue architecture to create reproducible biological models.",
     },
   ],
 } as const;
 
+/**
+ * 05 — About. Trust, and the page's return to paper before the close.
+ *
+ * No figures are invented here. The metadata column carries only what is
+ * already established elsewhere on the page or in the registered address.
+ */
+export const about = {
+  heading: "We build the instrument alongside the people using it." as string | null,
+  headingPlaceholder: "Heading placeholder — about NITS",
+  body:
+    "NITS Engineering is a bio-medical research company in New Delhi. Our instruments are specified at the bench — in hospitals, university laboratories and industry R&D — because that is the only place the requirement is actually known. What we build is what the experiment asked for." as
+      | string
+      | null,
+  bodyPlaceholder: "Body placeholder — who we are, why we are trusted",
+  /** Mono metadata, right-aligned per design rule 15. */
+  facts: [
+    { key: "Based", value: "New Delhi, India" },
+    { key: "Field", value: "Bio-medical instrumentation" },
+    { key: "Instruments", value: "Four" },
+    { key: "Working with", value: "Clinical · Academic · Industry" },
+  ],
+} as const;
+
+/**
+ * 06 — Partners. The real institution list, typeset rather than presented as
+ * a logo wall — logos are not in the repo yet and a grid of empty slots reads
+ * as unfinished. Each row is name + location, so a logo can be dropped in
+ * beside the name later without changing the construction.
+ *
+ * The right-hand column is a location, not an expansion of the acronym —
+ * ZHAW is Zurich University of Applied Sciences, but putting that in the
+ * location slot made one row read as a different kind of entry. Tacit Medtek
+ * has no location given; it renders without one rather than with a guess.
+ * Design rule 22.
+ */
 export const partners = {
-  heading: "We look for people whose experiment does not fit the catalogue.",
-  cards: [
+  heading: "Our partners are the ones setting the specification.",
+  groups: [
     {
-      eyebrow: "Labs",
-      title: "Research groups",
-      body: "Print the construct the protocol calls for instead of the one that happens to exist.",
+      label: "Clinical",
+      items: [
+        { name: "AIIMS", place: "New Delhi" },
+        { name: "NewEra Hospital", place: "Nagpur" },
+        { name: "CMC Vellore", place: "Vellore" },
+      ],
     },
     {
-      eyebrow: "Clinical",
-      title: "Hospitals & diagnostics",
-      body: "Tissue models for testing, training and diagnostic development.",
+      label: "Laboratories",
+      items: [
+        { name: "Beacon Lab, SRM", place: "Amravati" },
+        { name: "THSTI", place: "Faridabad" },
+        { name: "CCDC", place: "New Delhi" },
+        { name: "SHINE School, VIT", place: "Vellore" },
+        { name: "CBCMT, VIT", place: "Vellore" },
+        { name: "NIT Agartala", place: "Agartala" },
+        { name: "ZHAW", place: "Zurich" },
+      ],
     },
     {
-      eyebrow: "Industry",
-      title: "Pharma & biotech R&D",
-      body: "Screen against human tissue earlier, with material you specified.",
-    },
-    {
-      eyebrow: "Capital",
-      title: "Investors",
-      body: "A hardware company in a field that has stopped being willing to wait.",
+      label: "Industry",
+      items: [{ name: "Tacit Medtek", place: null as string | null }],
     },
   ],
 } as const;
