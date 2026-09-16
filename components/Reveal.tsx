@@ -2,7 +2,14 @@
 
 import { useEffect, useRef, type CSSProperties, type ElementType, type ReactNode } from "react";
 
-export type RevealName = "nits-rise" | "nits-fade" | "nits-in" | "nits-in-sm" | "nits-zoom" | "nits-par";
+export type RevealName =
+  | "nits-rise"
+  | "nits-fade"
+  | "nits-in"
+  | "nits-in-sm"
+  | "nits-lift"
+  | "nits-zoom"
+  | "nits-par";
 
 type RevealProps = {
   /** Which keyframe set to play. */

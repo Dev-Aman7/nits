@@ -208,6 +208,16 @@ img {
   }
 }
 
+/* Transform only — for hairline card faces where opacity punches through the grid. */
+@keyframes nits-lift {
+  from {
+    transform: translateY(16px);
+  }
+  to {
+    transform: none;
+  }
+}
+
 @keyframes nits-zoom {
   from {
     opacity: 0;

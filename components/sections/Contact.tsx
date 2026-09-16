@@ -5,7 +5,7 @@ import s from "../Sections.module.css";
 
 /**
  * Contact — the only saturated ground, and the close of the narrative.
- * Contact is a `mailto:` link, not a form; there are no forms in this design.
+ * Primary CTA opens the access request form; enquiries stay on mailto.
  */
 export function Contact() {
   return (
@@ -26,7 +26,12 @@ export function Contact() {
 
           <p className={`bodyLg ${s.contactLede}`}>{contact.lede}</p>
 
-          <a href={`mailto:${site.email}`} className={`btn btnInverted ${s.contactCta}`}>
+          <a
+            href={contact.ctaHref}
+            className={`btn btnInverted ${s.contactCta}`}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
             {contact.cta}
             <span className="dot dotAccent" aria-hidden="true" />
           </a>
