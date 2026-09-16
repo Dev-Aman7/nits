@@ -5,10 +5,17 @@
   color: var(--text-paper-1);
 }
 
+/* Hero + openings share one sticky sequence; Contact stays outside. */
+.stage {
+  position: relative;
+  isolation: isolate;
+}
+
 /* ---- Hero (home Overview rhythm) ---------------------------------------- */
 
 .hero {
   position: relative;
+  z-index: 1;
   min-height: min(72vh, 720px);
   display: flex;
   flex-direction: column;
@@ -67,12 +74,6 @@
   color: var(--text-paper-2);
 }
 
-.heroCue {
-  flex: none;
-  color: var(--accent-on-paper);
-  padding-bottom: 6px;
-}
-
 .heroRule {
   position: absolute;
   left: 0;
@@ -85,6 +86,8 @@
 /* ---- Openings: left list + right brief ---------------------------------- */
 
 .openings {
+  position: relative;
+  z-index: 1;
   border-bottom: 1px solid var(--border-paper);
   min-height: 70vh;
 }
@@ -231,7 +234,7 @@
 .detailPane {
   flex: 2 1 420px;
   min-width: 0;
-  background: var(--white);
+  background: color-mix(in oklab, var(--paper) 62%, transparent);
 }
 
 /* ---- Detail brief ------------------------------------------------------- */
@@ -358,6 +361,8 @@
 }
 
 .empty {
+  position: relative;
+  z-index: 1;
   padding: var(--space-section) var(--space-container);
   color: var(--text-paper-3);
 }

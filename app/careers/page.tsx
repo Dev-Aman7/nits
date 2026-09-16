@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { CareersHero } from "@/components/careers/CareersHero";
 import { CareersOpenings } from "@/components/careers/CareersOpenings";
+import { CareersScrollFrames } from "@/components/careers/CareersScrollFrames";
 import s from "@/components/careers/Careers.module.css";
 import { Chrome } from "@/components/Chrome";
 import { Contact } from "@/components/sections/Contact";
@@ -33,12 +34,15 @@ export default function CareersPage() {
       <Chrome />
 
       <main id="careers-main" className={s.page}>
-        <CareersHero />
-        {jobs.length > 0 ? (
-          <CareersOpenings />
-        ) : (
-          <p className={`mono ${s.empty}`}>{careers.emptyLabel}</p>
-        )}
+        <div className={s.stage}>
+          <CareersScrollFrames />
+          <CareersHero />
+          {jobs.length > 0 ? (
+            <CareersOpenings />
+          ) : (
+            <p className={`mono ${s.empty}`}>{careers.emptyLabel}</p>
+          )}
+        </div>
         <Contact />
       </main>
 

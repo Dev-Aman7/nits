@@ -8,7 +8,7 @@ import { useScrollState } from "@/lib/useScrollState";
 import styles from "./Chrome.module.css";
 
 /**
- * The page's two fixed elements. Both read the same rAF-throttled scroll
+ * Fixed progress bar + navbar. Both read the same rAF-throttled scroll
  * state, so there is one listener for the whole document.
  */
 export function Chrome() {
@@ -46,14 +46,12 @@ export function Chrome() {
 
   return (
     <>
-      {isHome ? (
-        <div className={styles.progress} role="presentation">
-          <div
-            className={styles.progressFill}
-            style={{ width: `${(progress * 100).toFixed(2)}%` }}
-          />
-        </div>
-      ) : null}
+      <div className={styles.progress} role="presentation">
+        <div
+          className={styles.progressFill}
+          style={{ width: `${(progress * 100).toFixed(2)}%` }}
+        />
+      </div>
 
       <header className={styles.nav} data-ground={ground}>
         <a href="/" className={styles.wordmark} aria-label={`${site.name} — home`}>

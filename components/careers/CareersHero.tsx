@@ -5,7 +5,7 @@ import { motion, useReducedMotion } from "motion/react";
 import s from "./Careers.module.css";
 
 /**
- * Full-bleed paper hero — Overview rhythm: mono rail, claim, cue, hairline.
+ * Full-bleed paper hero — Overview rhythm: mono rail, claim, hairline.
  */
 export function CareersHero() {
   const reduce = useReducedMotion();
@@ -41,9 +41,6 @@ export function CareersHero() {
           <h1 className={`h2lg ${s.heading}`}>{careers.heading}</h1>
           <p className={`bodyLg ${s.lede}`}>{careers.lede}</p>
         </div>
-        <a href="#openings" className={`mono ${s.heroCue}`}>
-          View openings ↓
-        </a>
       </motion.div>
 
       <div className={s.heroRule} aria-hidden="true" />
