@@ -469,28 +469,38 @@
    05 — Partners
    ========================================================================== */
 
-/* Three groups, each a mono label over a ruled list of institutions. The name
-   carries in the display face; the location is mono and right-aligned, which
-   is the only right-alignment this design permits (rule 15). */
+/* Three hairline-grid columns (design.md cards): gap: 1px over #CFCCC4 so the
+   rules are the grid. Each face holds a mono eyebrow + ruled institution list.
+   Names stack over places so narrow columns stay readable. */
 
 .partnerGroups {
-  display: flex;
-  flex-direction: column;
-  gap: 56px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--border-paper-strong);
+  border: 1px solid var(--border-paper-strong);
 }
 
 .partnerGroup {
-  display: grid;
-  grid-template-columns: minmax(0, 200px) minmax(0, 1fr);
-  gap: clamp(24px, 4vw, 64px);
-  align-items: start;
+  display: flex;
+  flex-direction: column;
+  padding: 32px 24px 40px;
+  background: var(--paper);
+  min-width: 0;
+}
+
+/* Reveal target — no background, so opacity never punches a hole in the face. */
+.partnerGroupBody {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
 }
 
 .partnerGroupHead {
   display: flex;
   align-items: baseline;
   gap: 12px;
-  padding-top: 18px;
 }
 
 .partnerGroupLabel {
@@ -510,44 +520,28 @@
 
 .partnerRow {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 18px 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 16px 0;
   border-bottom: 1px solid var(--border-paper);
 }
 
 .partnerName {
-  font-size: clamp(19px, 2vw, 25px);
-  line-height: 1.25;
-  letter-spacing: -0.01em;
+  font-size: clamp(17px, 1.6vw, 20px);
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  font-weight: 500;
   color: var(--text-paper-1);
 }
 
 .partnerPlace {
-  flex: none;
-  text-align: right;
   color: var(--text-paper-3);
 }
 
 @media (max-width: 820px) {
-  .partnerGroup {
+  .partnerGroups {
     grid-template-columns: minmax(0, 1fr);
-    gap: 16px;
-  }
-
-  .partnerGroupHead {
-    padding-top: 0;
-  }
-
-  .partnerRow {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-  }
-
-  .partnerPlace {
-    text-align: left;
   }
 }
 

@@ -98,9 +98,11 @@ export function Chrome() {
           </nav>
 
           <a
-            href="/#contact"
+            href={contact.ctaHref}
             className={`btn btnPrimary ${styles.cta}`}
             onClick={close}
+            target="_blank"
+            rel="noreferrer noopener"
           >
             {contact.cta}
             <span className="dot" aria-hidden="true" />

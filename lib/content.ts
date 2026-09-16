@@ -243,11 +243,11 @@ export const partners = {
     {
       label: "Laboratories",
       items: [
+        { name: "SHINE School, VIT", place: "Vellore" },
+        { name: "CBCMT, VIT", place: "Vellore" },
         { name: "Beacon Lab, SRM", place: "Amravati" },
         { name: "THSTI", place: "Faridabad" },
         { name: "CCDC", place: "New Delhi" },
-        { name: "SHINE School, VIT", place: "Vellore" },
-        { name: "CBCMT, VIT", place: "Vellore" },
         { name: "NIT Agartala", place: "Agartala" },
         { name: "ZHAW", place: "Zurich" },
       ],
@@ -263,6 +263,7 @@ export const contact = {
   heading: "Tell us what you have been told cannot be built.",
   lede: "We work directly with the people running the experiment. Send the construct, the constraint, or the question — whichever you have.",
   cta: "Request access",
+  ctaHref: "https://forms.gle/SCigbnADUen1Fwok7",
 } as const;
 
 /**

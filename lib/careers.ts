@@ -1,11 +1,11 @@
 /**
  * Careers page copy and openings. Content is data — components only layout.
  *
- * Apply targets a single Google Form until per-role forms exist. Swap
- * CAREERS_APPLY_FORM_URL when the real form is ready.
+ * Prefer a per-role `applyUrl`. CAREERS_APPLY_FORM_URL is the shared fallback
+ * until every opening has its own form.
  */
 
-/** Replace with the live Google Form URL. */
+/** Shared fallback Google Form when a role has no dedicated form yet. */
 export const CAREERS_APPLY_FORM_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSc-PLACEHOLDER-REPLACE-ME/viewform";
 
@@ -76,7 +76,7 @@ export const jobs: readonly Job[] = [
       "Familiarity with DLP, extrusion or sterile-environment design.",
       "Experience with supplier management for precision parts in India.",
     ],
-    applyUrl: CAREERS_APPLY_FORM_URL,
+    applyUrl: "https://forms.gle/AFogto7XPbihqGS68",
   },
   {
     id: "tissue-scientist",
@@ -109,7 +109,7 @@ export const jobs: readonly Job[] = [
       "Prior collaboration with instrument vendors or core facilities.",
       "Publication or IP record in engineered tissues.",
     ],
-    applyUrl: CAREERS_APPLY_FORM_URL,
+    applyUrl: "https://forms.gle/DbevdutSx63w7yzR7",
   },
   {
     id: "firmware-controls",
@@ -142,7 +142,7 @@ export const jobs: readonly Job[] = [
       "Prior medical or laboratory device work.",
       "Familiarity with UI for instrument operators (not consumer apps).",
     ],
-    applyUrl: CAREERS_APPLY_FORM_URL,
+    applyUrl: "https://forms.gle/S8SJ9B2oRvAmM2Ru5",
   },
   {
     id: "clinical-apps",
@@ -175,7 +175,7 @@ export const jobs: readonly Job[] = [
       "Experience in regenerative medicine or surgical research settings.",
       "Hindi and English fluency in technical conversations.",
     ],
-    applyUrl: CAREERS_APPLY_FORM_URL,
+    applyUrl: `https://forms.gle/9cPk4qsCz7J1shmg7`,
   },
 ] as const;
 

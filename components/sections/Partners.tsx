@@ -1,16 +1,20 @@
-import { STAGGER, STAGGER_DELAY, partners } from "@/lib/content";
+import { STAGGER_DELAY, partners } from "@/lib/content";
 import { Reveal } from "../Reveal";
 import s from "../Sections.module.css";
+
+/** Faster cover end than the global quartet — cards finish opaque while still on screen. */
+const PARTNER_STAGGER = [
+  "entry 0% cover 18%",
+  "entry 4% cover 22%",
+  "entry 8% cover 26%",
+] as const;
 
 /**
  * 06 — Partners. The real institution list, typeset.
  *
- * Three groups, each a mono label against a ruled list: name in display type,
- * location right-aligned in mono. A logo wall was the alternative, but the
- * logos are not in the repo and a grid of empty slots reads as unfinished —
- * and a name set in the page's own face reads as a credential, where a logo
- * strip reads as decoration. When logos arrive they sit beside the names
- * without changing the construction.
+ * Three hairline-grid columns (Clinical / Laboratories / Industry). Each face
+ * is a mono eyebrow over a ruled name + place list. Paper faces stay opaque;
+ * Reveal only lifts the inner content so the #CFCCC4 grid never shows through.
  */
 export function Partners() {
   return (
@@ -28,31 +32,32 @@ export function Partners() {
 
         <div className={s.partnerGroups}>
           {partners.groups.map((group, i) => (
-            <Reveal
-              key={group.label}
-              name="nits-in-sm"
-              range={STAGGER[i]}
-              delay={STAGGER_DELAY[i]}
-              className={s.partnerGroup}
-            >
-              <div className={s.partnerGroupHead}>
-                <span className={`mono ${s.partnerGroupLabel}`}>{group.label}</span>
-                <span className={`mono ${s.partnerGroupCount}`}>
-                  {String(group.items.length).padStart(2, "0")}
-                </span>
-              </div>
+            <div key={group.label} className={s.partnerGroup}>
+              <Reveal
+                name="nits-lift"
+                range={PARTNER_STAGGER[i]}
+                delay={STAGGER_DELAY[i]}
+                className={s.partnerGroupBody}
+              >
+                <div className={s.partnerGroupHead}>
+                  <span className={`mono ${s.partnerGroupLabel}`}>{group.label}</span>
+                  <span className={`mono ${s.partnerGroupCount}`}>
+                    {String(group.items.length).padStart(2, "0")}
+                  </span>
+                </div>
 
-              <ul className={s.partnerList}>
-                {group.items.map((item) => (
-                  <li key={item.name} className={s.partnerRow}>
-                    <span className={s.partnerName}>{item.name}</span>
-                    {item.place ? (
-                      <span className={`mono ${s.partnerPlace}`}>{item.place}</span>
-                    ) : null}
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
+                <ul className={s.partnerList}>
+                  {group.items.map((item) => (
+                    <li key={item.name} className={s.partnerRow}>
+                      <span className={s.partnerName}>{item.name}</span>
+                      {item.place ? (
+                        <span className={`mono ${s.partnerPlace}`}>{item.place}</span>
+                      ) : null}
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
+            </div>
           ))}
         </div>
       </div>
